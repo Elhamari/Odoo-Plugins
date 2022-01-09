@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_self_service,employee.self.service,model_employee_self_service,hr.group_hr_user,1,1,1,1
+access_template,access.template,model_template,hr.group_hr_user,1,1,1,1

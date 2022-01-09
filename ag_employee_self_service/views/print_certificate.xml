@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="report_print_pack">
+    <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+            <style type="text/css">
+
+
+              @font-face {
+                font-family: 'PWSignaturetwo';
+                font-style: heavy;
+                font-weight: 400;
+                src: url(ag_employee_self_service/static/src/fonts/PWSignaturetwo.ttf) format('truetype');
+              }
+
+
+          </style>
+            <t t-foreach="docs" t-as="doc">
+                <span style="margin-left:80%;">Date: <t t-esc="doc.date"/></span><br/>
+                <span style="margin-left:80%;">Ref: <span t-field="doc.seq_name"/></span><br/>
+
+                <h2 align="center"><t t-esc="doc.subject"/></h2><br/>
+
+                <div class="col-12">
+                <!-- <p>To Whom IT May Concern</p> -->
+
+
+                <!--<table align="center" style="page-break-after:always !important;">
+                    <tr>
+                        <td>
+                            <br/><br/>
+                            <p>This letter certifies that  <span><strong><t t-esc="doc.employee"/></strong></span>
+                                was an employee in the role of  <strong> <t t-esc="doc.employee.job_id.name"/></strong> with
+                                 <strong> <t t-esc="doc.employee.company_id.name"/></strong> from <strong> <t t-esc="o['date_to']"/></strong> ,with duration of <strong> <t t-esc="o['duration']"/></strong>days,
+                                <strong> <t t-esc="o['hours']"/></strong>Hours,<strong> <t t-esc="o['minutes']"/></strong>Minutes,
+                                at <strong> <t t-esc="o['company_name']"/></strong>.</p></td>
+                    </tr>
+                </table>-->
+                <!-- <p t-field="doc.template"/> -->
+                <span t-raw="doc.template"/><br/><br/>
+<!--                    <p>Sincerely</p>-->
+                </div>
+                <!--<div class="col-12" style="padding-top:40px;">
+
+                <p>Sincerely</p>
+                    <div class="col-6" padding-right="10px;">
+                        <div><img t-if="doc.document_type.image_stamp" t-att-src="'data:image/png;base64,%s' % to_text(doc.document_type.image_stamp)" style="height:90px; width: 30%" /></div>
+
+                    </div>
+                    <div class="col-6" style="float:right;">
+                        <img t-if="doc.document_type.image_stamp" t-att-src="'data:image/png;base64,%s' % to_text(doc.document_type.image_stamp)" style="height:90px; width: 30%" />
+                    </div>
+                </div>
+                <div class="col-12" style="padding-top:10px;">
+
+
+                    <div class="col-6">
+                        <div style="height:10px; width: 30%" >COMPANY STAMP</div>
+
+                    </div>
+                    <div class="col-6" style="float:right;padding-right:20px;">
+                        <div style="height:10px; width: 30%" >HR MANAGER</div>
+                    </div>
+                </div>-->
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:30px; align:right;" >
+
+                    <tr>
+                        <td width="40%">
+                            <img t-if="doc.document_type.image_stamp" t-att-src="'data:image/png;base64,%s' % to_text(doc.document_type.image_stamp)" style="margin-left:70%;" />
+                        </td>
+                    </tr>
+                    <tr>
+                         <td width="10%">
+                             <t t-if="doc.document_type.sign_man">
+                                <b><span t-field="doc.document_type.sign_man" style="font-family:PWSignaturetwo;font-size:30px;margin-left:72%;white-space: nowrap; "/></b>
+                             </t>
+                            <t t-else=""><p style="font-family:PWSignaturetwo;font-size:38px;color:white;">.</p></t>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="15%">
+                        <p style="padding-top:5px;margin-left:72%;font-weight:bold;">Signature and Stamp</p>
+                        </td>
+                    </tr>
+                </table>
+            </t>
+        </t>
+    </t>
+</template>
+
+   <template id="report_print_pack_new">
+    <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="doc">
+                <span style="text-align:right;">Date: <t t-esc="doc.date"/></span><br/>
+                <span style="text-align:right;">Ref: <span t-field="doc.seq_name"/></span>
+
+                <h2 align="center"><t t-esc="doc.subject"/></h2><br/>
+
+                <div class="col-12">
+                <!-- <p>To Whom IT May Concern</p> -->
+
+
+                <!--<table align="center" style="page-break-after:always !important;">
+                    <tr>
+                        <td>
+                            <br/><br/>
+                            <p>This letter certifies that  <span><strong><t t-esc="doc.employee"/></strong></span>
+                                was an employee in the role of  <strong> <t t-esc="doc.employee.job_id.name"/></strong> with
+                                 <strong> <t t-esc="doc.employee.company_id.name"/></strong> from <strong> <t t-esc="o['date_to']"/></strong> ,with duration of <strong> <t t-esc="o['duration']"/></strong>days,
+                                <strong> <t t-esc="o['hours']"/></strong>Hours,<strong> <t t-esc="o['minutes']"/></strong>Minutes,
+                                at <strong> <t t-esc="o['company_name']"/></strong>.</p></td>
+                    </tr>
+                </table>-->
+                <!-- <p t-field="doc.template"/> -->
+                <span t-raw="doc.template"/><br/><br/>
+                </div>
+
+<!--                <p>Yours sincerely,</p><br />-->
+                <span t-field="doc.sign_man" /><br/>
+                <span t-field="doc.sign_man.job_id.name" />
+
+                 <!-- <p>Head Of Department</p> -->
+
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>

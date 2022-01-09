@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_payroll_transactions_manager,hr.payroll.transactions,model_hr_payroll_transactions,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_hr_payroll_transactions_line_manager,hr.payroll.transactions.line,model_hr_payroll_transactions_line,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_hr_variance_line_manager,hr.variance.line,model_hr_variance_line,base.group_user,1,1,1,1
+access_hr_payroll_tran_sheet_view_manager,hr.payroll.tran.sheet.view,model_hr_payroll_tran_sheet_view,hr_payroll.group_hr_payroll_user,1,1,0,1

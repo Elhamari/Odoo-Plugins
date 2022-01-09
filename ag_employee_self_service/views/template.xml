@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="template_tree" model="ir.ui.view">
+		<field name="name">Template</field>
+		<field name="model">template</field>
+		<field name="arch" type = "xml">
+			<tree string="template">
+				<field name="template_name"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="template_form" model="ir.ui.view">
+		<field name="name">Template</field>
+		<field name="model">template</field>
+		<field name="arch" type="xml">
+			<form string="template">
+				<sheet>
+					<group>
+						<group>
+							<field name="template_name"/>
+							<field name="title"/>
+							<field name="level1"/>
+							<field name="level2"/>
+							<field name="level3"/>
+						</group>
+						<group>
+							<field name="image_stamp" widget="image" class="oe_avatar" height="90"/>
+							<field name="sign_man"/>
+							<field name="show_selfservice" />
+						</group>
+						<field name="template"/>
+						
+						
+					</group>
+					
+					<h2>Key Values:</h2><br/>
+					<table style="width:100%">
+						<tr>
+							<td style="width:20%">employee_name =></td>
+							<td style="width:25%">for showing the employee name</td>
+							<td style="width:10%"/>
+							<td style="width:20%">name_ar =></td>
+							<td style="width:25%">for showing the arabic employee name</td>
+						</tr>
+						<tr>
+							<td style="width:20%">employee_email =></td>
+							<td style="width:25%">for showing the employee email</td>
+							<td style="width:10%"/>
+							<td style="width:20%">employee_department =></td>
+							<td style="width:25%">for showing the employee department</td>
+						</tr>
+						<tr>
+							<td style="width:20%">employee_mobile_phone =></td>
+							<td style="width:25%">for showing the employee mobile</td>
+							<td style="width:10%"/>
+							<td style="width:20%">net_salary =></td>
+							<td style="width:25%">for showing the employee salary</td>
+						</tr>
+						<tr>
+							<td style="width:20%">passport_no =></td>
+							<td style="width:25%">for showing the employee passport number</td>
+							<td style="width:10%"/>
+							<td style="width:20%">emp_eid =></td>
+							<td style="width:25%">for showing the employee EID</td>
+						</tr>
+						<tr>
+							<td style="width:20%">emp_visa_no =></td>
+							<td style="width:25%">for showing the employee visa number</td>
+							<td style="width:10%"/>
+							<td style="width:20%">permit_no =></td>
+							<td style="width:25%">for showing the employee work permit</td>
+						</tr>
+						<tr>
+							<td style="width:20%">company_ids =></td>
+							<td style="width:25%">for showing the company name</td>
+							<td style="width:10%"/>
+							<td style="width:20%">join_date =></td>
+							<td style="width:25%">for showing the joining date</td>
+						</tr>
+
+						<tr>
+							<td style="width:20%">designation_id =></td>
+							<td style="width:25%">for showing the job position</td>
+							<td style="width:10%"/>
+							<td style="width:20%">nationality =></td>
+							<td style="width:25%">for showing the employee nationality</td>
+						</tr>
+						<tr>
+							<td style="width:20%">emp_visa_expiry =></td>
+							<td style="width:25%">for showing the employee visa expiry</td>
+							<td style="width:10%"/>
+							<td style="width:20%">amount_in_word</td>
+							<td style="width:25%">For showing net salary amount in words</td>
+						</tr>
+					</table>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="template_action" model="ir.actions.act_window">
+		<field name="name">Template</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">template</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+
+
+
+</odoo>

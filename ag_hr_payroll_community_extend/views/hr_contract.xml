@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="hr_contract_form_additional_allowance_extend" model="ir.ui.view">
+        <field name="name">hr.contract.view.additional.allowance.extend</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='allowances']" position="replace">
+            </xpath>
+
+            <xpath expr="//page[@name='information']/group/group[@name='yearly_advantages']" position="replace">
+            </xpath>
+
+            <xpath expr="//page[@name='information']/group/group[@name='salary_and_advantages']" position="after">
+                <field name="hr_allowance_line_ids" nolabel="1" colspan="2" >
+                    <tree editable="top">
+
+                       <field name="contract_id" invisible="1"/>
+                       <field name="rule_type" required="1"  options="{'no_create': True, 'no_create_edit':True}"/>
+                       <field name="code" invisible="1"/>
+                       <field name="amt"/>
+
+                    </tree>
+
+                </field>
+                <group>
+                  <field name="hr_total_wage" string="Total Salary"/>
+                    <field name="amount_in_word" invisible="1"/>
+                </group>
+            </xpath>
+           <!-- <xpath expr="//group[@name='allowances']" position="after">
+
+            </xpath>-->
+        </field>
+     </record>
+
+
+  <!--  Multi Payslip Wizard  -->
+    <record id="multi_payslip_confirm_form_wizard" model="ir.ui.view">
+        <field name="name">multi.payslip.wizard.form.wizard</field>
+        <field name="model">multi.payslip.wizard</field>
+        <field name="arch" type="xml">
+        <form>
+        <h3>Click on Confirm Button for confirm multiple Payslips.</h3>
+        <footer>
+        <button name="multi_payslip" string="Confirm" type="object" class="oe_highlight"/>
+        or
+        <button string="Cancel" class="oe_link" special="cancel"/>
+        </footer>
+        </form>
+        </field>
+        </record>
+        <act_window id="action_multiple_payslip_hr_payslip" name="Multi Payslip Confirm" res_model="multi.payslip.wizard" binding_model="hr.payslip" view_mode="form" target="new"/>
+    </odoo>

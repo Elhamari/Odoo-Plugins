@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_contract_view_form_inherit" model="ir.ui.view">
+                <field name="name">hr.contract.form.inherit</field>
+                <field name="model">hr.contract</field>
+                <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+                <field name="arch" type="xml">
+                <field name="structure_type_id" position="after">
+                    <field name="contract_type"/>
+                </field>
+                </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="final_settlement_tree_view">
+            <field name="name">Final Settlement</field>
+            <field name="model">final.settlement</field>
+            <field name="arch" type="xml">
+                <tree string="Final Settlement">
+                    <field name="employee_id"/>
+                    <field name="join_date"/>
+                    <field name="settlement_type_id"/>
+
+                </tree>
+          </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="final_settlement_form_view">
+        <field name="name">Final Settlement</field>
+        <field name="model">final.settlement</field>
+        <field name="arch" type="xml">
+            <form string="Final Settlement">
+                <header>
+
+
+                    <button name="check_accounts_entry" invisible="1" type="object" string="Check Accounts Entry" attrs="{'invisible':[('state','in',('progress','done'))]}"/>
+
+
+<!--                    <button name="set_to_draft" type="object" string="Set To Draft" states="progress,done"/>-->
+
+                    <button name="action_validate" type="object" string="Validate" states="progress" invisible="1"/>
+                    <button name="action_progress" type="object" string="Submit"  states="draft" class="oe_highlight"/>
+                    <button name="action_approve" type="object" string="Approve"  states="progress" class="oe_highlight" groups="ag_hr_updates.group_bonus_top_managment"/>
+                    <button name="action_reject" string="Reject" type="object" states="progress" class="oe_highlight" groups="ag_hr_updates.group_bonus_top_managment"/>
+                    <button name="action_reset" string="Reset To Draft" type="object" states="reject" class="oe_highlight"/>
+
+                    <button name="create_settlement_payment" type="object" string="Create Payments"  states="done" class="oe_highlight" groups="account.group_account_invoice"/>
+
+
+
+                   <field name="state" widget="statusbar" statusbar_visible="draft,progress,done,paid" />
+
+               </header>
+               <sheet>
+
+                <div name="button_box"  class="oe_button_box">
+                    <button name="action_view_payslip" type="object"
+                            class="oe_stat_button" icon="fa-dollar" widget="statinfo" string="Payslips">
+<!--                            <field name="active" widget="boolean_button"-->
+    <!--                                options='{"terminology": "archive"}'/>-->
+                    </button>
+                </div>
+
+                 <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"  readonly="1"/>
+                        </h1>
+                    </div>
+
+                 <div class="row">
+                       <div class="mb-4 mb-lg-0 col-lg-6">
+
+                        <button name="action_generate" type="object" string="Get Employee Details" attrs="{'invisible':[('state','in',('progress','done'))]}" class="oe_highlight"/>
+                </div>
+                </div><br/>
+
+                <div class="row">
+
+                       <div class="mb-4 mb-lg-0 col-lg-6">
+                          <div class="h-100 card">
+                             <div class="card-header">
+                                 <p class="h5 card-heading">Employee Details</p>
+                             </div>
+                            <div class="card-body">
+                                <div class="chart-holder">
+                                    <group>
+                                        <field name="employee_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="department_id" readonly="1" force_save="1"/>
+                                        <field name="job_id" readonly="1"/>
+                                        <field name="basic" string="Employee Basic Salary" readonly="1"/>
+                                        <field name="address_home_id" invisible="1"/>
+                                         <field name="join_date" string="Join Date" readonly="1"/>
+
+                                    </group>
+                                     <label for="refuse_reason" /><br/>
+                                    <field name="refuse_reason" nolabel="1" attrs="{'readonly': [('state', 'not in', ['reject'])],'required': [('state', 'in', ['reject'])]}"/>
+
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+
+
+                     <div class="mb-4 mb-lg-0 col-lg-6">
+                          <div class="h-100 card">
+                             <div class="card-header">
+                                 <p class="h5 card-heading">Settlement Details</p>
+                             </div>
+                            <div class="card-body">
+                                <div class="chart-holder">
+                                    <group>
+                                        <field name="settlement_type_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="resign_date" string="Resign Date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="contract_type_id" readonly="1" force_save="1"/>
+                                        <field name="reason"  placeholder="Reason" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    </group>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                        <br/>
+
+
+
+
+                <notebook>
+                <page string="Account Information" invisible="1">
+                <field name="account_line" attrs="{'readonly':[('state','in', ('done'))]}">
+                    <tree editable="top" create="false" delete="false">
+
+                         <field name="account_id"/>
+                        <field name="balance" string="Due" sum="Balance" readonly="1"/>
+                        <field name="amount" string="Amount" sum="Amount" attrs="{'readonly':[('final_settlement_flag','=', True)]}"/>
+                        <field name="final_settlement_flag" invisible="1"/>
+                     </tree>
+                </field>
+
+                <separator string="Adjustment"/>
+
+
+                <field name="account_new_line" attrs="{'readonly':[('state','in', ('done'))]}">
+                    <tree editable="top" >
+                         <field name="account_line_id" invisible="1"/>
+
+                         <field name="account_id" />
+                         <field name="due" invisible="1"/>
+
+                        <field name="debit" sum="Debit" />
+                        <field name="credit" sum="Credit"/>
+                        <field name="final_settlement" invisible="1"/>
+
+                     </tree>
+                </field>
+
+
+                </page>
+
+               <page string="Gratuity">
+                <button name="generate_gratuity_value" type="object" string="Get Gratuity" attrs="{'invisible':[('state','in',('progress','done'))]}" class="oe_highlight"/>
+
+               <field name="gratuity_line_id" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                    <tree editable="top" create="false" delete="false">
+
+                        <field name="slab"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="no_of_days"/>
+                        <field name="termination_amount"/>
+                        <field name="resign_amount"/>
+
+                    </tree>
+                </field>
+
+                    <br/>
+                        <br/>
+                        <br/>
+                        <h3>Gratuity Calculation Logic</h3><br/>
+                        <p>
+                            ** Limited Contract ** <br/>
+                            **Less than one year = Employee is not entitled for any gratuity pay.<br/>
+                            **Between 1 and 5 years of service  = Employee is entitled to full gratuity pay based on 21 days salary for each year of work.<br/>
+                            **5 or more year of service = Employee is entitled to full gratuity pay based on 30 days salary for each year of work.<br/>
+                            <br/>
+                            <br/>
+                            ** Unlimited Contract **<br/>
+                            **Less than one year = Employee is not entitled for any gratuity pay.<br/>
+                            **Between 1 and 3 years of service = Employee is entitled to one third of 21 days gratuity pay.<br/>
+                            **Between 3 and 5 years of service = Employee is entitled to two thirds of 21 days gratuity pay.<br/>
+                            **5 or more years of service = Employee is entitled to full 21 days gratuity pay for each year of service.<br/>
+                        </p>
+
+
+                </page>
+
+                 <page string="Additions OR Deductions">
+                     <field name="payroll_trans_line" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                     <tree editable="top" >
+                        <field name="payroll_item" />
+                        <field name="tran_note" required="1"/>
+
+                        <field name="amount" sum="Total" string="Amount"/>
+
+                     </tree>
+                       </field>
+
+                 </page>
+
+
+                <page string="Settlement Calculation">
+
+                    <div class="row mt-3"><!--attrs="{'invisible': [('payment_type','=',False)]}"-->
+                           <div class="mb-4 mb-lg-0 col-lg-6" name="leave_salary">
+                             <div class="h-50 card">
+                                 <div class="card-header">
+                                     <p class="h5 card-heading">Leave Salary</p>
+                                 </div>
+                                 <div class="card-body">
+                                    <div class="chart-holder">
+                                      <group>
+                                         <field name="last_vacation" invisible="1"/>
+                                        <field name="available_days" readonly="1"/>
+                                        <field name="total_salary" readonly="1" string="Net Salary"/>
+
+                                        <field name="fs_gross_per_day" readonly="1"/>
+
+                                      </group><br/>
+                                      <group>
+                                          <button name="action_fs_date_diff" type="object" string="Calculate Leave Salary" class="oe_highlight" attrs="{'invisible':[('state','in',('progress','done'))]}"/>
+                                      </group>
+
+                                    </div>
+                                 </div>
+                              </div><br/>
+                                <div class="h-50 card">
+                                 <div class="card-header">
+                                     <p class="h5 card-heading">Pending Salary</p>
+                                 </div>
+                                 <div class="card-body">
+                                    <div class="chart-holder">
+                                      <group>
+                                         <label for="pending_date_from" />
+                                            <div class="container">
+                                                <div class="row">
+                                                   <field name="pending_date_from" class="col-6" readonly="0" style="margin-right:30px;" force_save="1" attrs="{'readonly': [('state','in',('approved','done'))]}"/> To
+                                                    <field name="pending_date_to" class="col-6" readonly="0" force_save="1" attrs="{'readonly': [('state','in',('approved','done'))]}"/>
+                                                </div>
+
+                                            </div>
+                                        <field name="duration" readonly="1"/>
+                                        <field name="fs_gross_per_pending_day" readonly="1"/>
+
+                                      </group><br/>
+                                        <group>
+                                          <button name="action_calc_pending_sal" type="object" string="Calculate Pending Salary" class="oe_highlight" attrs="{'invisible':[('state','in',('progress','done'))]}"/>
+                                      </group>
+
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="mb-4 mb-lg-0 col-lg-4" name="final_pay">
+                              <div class="h-100 card">
+                                 <div class="card-header">
+                                     <p class="h5 card-heading">Final Settlement Calculation</p>
+                                 </div>
+                                 <div class="card-body">
+                                    <div class="chart-holder">
+                                        <group>
+
+                                        <field name="fs_gross_available_days" readonly="1"/>
+                                        <field name="pending_leave_sal" readonly="1"/>
+                                        <field name="total_dec_amt"/>
+                                        <field name="total_add_amt"/>
+                                        <field name="final_settlement_amount" readonly="1"/>
+                                        </group>
+
+                                        <group>
+                                              <button name="action_final_settlement" type="object" string="Final Dues" class="oe_highlight" attrs="{'invisible':[('state','in',('progress','done'))]}"/>
+                                        </group>
+
+
+                                    </div>
+
+                                 </div>
+                                  <div class="card-footer">
+                                      <group>
+                                        <field name="final_payment" readonly="1"/>
+
+                                      </group>
+
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                    <!-- <field name="allowance_rule_ids" readonly="1">
+                        <tree>
+                          <field name="rule_type" domain="[('category_id.code','in',('ALW','DED'))]"/>
+                            <field name="code"/>
+                            <field name="amt"/>
+                        </tree>
+                    </field> -->
+
+                </page>
+
+
+                <page string="Accounting Information">
+
+                    <group string="Payment Information">
+                        <group>
+                            <field name="date" invisible="1"/>
+                           <field name="journal_id" domain="[('type', '=', 'bank')]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id" groups="base.group_multi_company" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                            <field name="currency_id"  groups="base.group_multi_currency" invisible="1"/>
+                        </group>
+                        <group>
+                           <field name="payment_id"/>
+                        </group>
+                    </group>
+
+
+                </page>
+
+
+                </notebook>
+               </sheet>
+            </form>
+        </field>
+</record>
+
+
+
+<record model="ir.ui.view" id="final_settlement_tree_view">
+        <field name="name">Final Settlement</field>
+        <field name="model">final.settlement</field>
+        <field name="arch" type="xml">
+            <tree string="Final Settlement">
+                <field name="employee_id"/>
+                <field name="join_date"/>
+                <field name="settlement_type_id"/>
+            </tree>
+      </field>
+</record>
+
+ <record model="ir.actions.act_window" id="action_final_settlement_view">
+        <field name="name">Settlement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">final.settlement</field>
+<!--        <field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+         <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to add Settlement.
+          </p>
+        </field>
+</record>
+
+  <record id="view_hr_payslip_form_setle_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherits</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='credit_note']" position="after">
+                <field name="settle_id" invisible="1"/>
+                <field name="pay_true" invisible="1"/>
+            </xpath>
+             <xpath expr="//button[@name='action_payslip_done']" position="replace">
+            <button string="Confirm" name="action_payslip_done" type="object" states="draft" class="oe_highlight" groups="hr.group_hr_user,hr.group_hr_manager" attrs="{'invisible':[('pay_true','!=',False)]}"/>
+        </xpath>
+        </field>
+  </record>
+<menuitem id="final_settlement_view" name="Settlement" action="action_final_settlement_view" parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root" sequence="37"/>
+
+
+ </data>
+</odoo>

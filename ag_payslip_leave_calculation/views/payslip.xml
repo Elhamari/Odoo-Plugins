@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_payslip_cus_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.cus.tree</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='contract_id']" position="after">
+                <field name="days"/>
+                <field name="previous_half_leave_count" invisible="1"/>
+                <field name="tot_annual_leave_bal" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="remarks"/>
+            </xpath>
+            <xpath expr="//page/field[@name='worked_days_line_ids']" position="replace">
+                <field name="worked_days_line_ids">
+                            <tree string="Worked Days" editable="bottom">
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="number_of_days" sum="Total Working Days"/>
+                                <field name="number_of_hours"/>
+                                <field name="previous_leave_count"/>
+                                <field name="total_leave_count"/>
+                                <field name="total_leave_year_count"/>
+                                <field name="contract_id"/>
+                                <field name="sequence" invisible="True"/>
+                            </tree>
+                            <form string="Worked Day">
+                                <group col="4">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="sequence"/>
+                                    <field name="number_of_days"/>
+                                    <field name="number_of_hours"/>
+                                    <field name="previous_leave_count"/>
+                                    <field name="total_leave_count"/>
+                                    <field name="total_leave_year_count"/>
+                                    <field name="contract_id"/>
+                                </group>
+                            </form>
+                        </field>
+                <!--<field name="current_leave_taken"/>
+                <field name="previous_leave_taken"/>
+                <field name="total_leaves_taken"/>-->
+<!--                <button name="get_sick_payroll_leaves" string="Sick" type="object" class="oe_highlight"/>-->
+
+            </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>

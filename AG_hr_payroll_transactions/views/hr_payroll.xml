@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<record id="hr_payroll_transactions_form" model="ir.ui.view">
+        <field name="name">hr.payroll.transactions.form</field>
+        <field name="model">hr.payroll.transactions</field>
+        <field name="arch" type="xml">
+            <form string="Payroll Transactions">
+                <header>
+                    <button name="loans_confirm" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+                    <button name="loans_accept" states="confirm" string="Approve" type="object" class="oe_highlight"/>
+                    <button name="loans_refuse" states="done,draft" string="Refuse" type="object" class="oe_highlight"/>
+                    <button name="loans_set_draft" states="cancelled" string="Set To Draft" type="object" class="oe_highlight"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date_from" required="1" string="Date" attrs="{'readonly': [('state', 'in', ['done','paid'])]}"/>
+                            <field name="date_to" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="name" required="1" attrs="{'readonly': [('state', 'in', ['done','paid'])]}"/>
+                            <field name="date" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="payroll_tran_line" attrs="{'readonly': [('state', 'in', ['done','paid'])]}">
+                                <tree string="Expense Lines" editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="payroll_item" domain="[('od_payroll_item','!=',False)]" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="tran_note" required="1"/>
+                                    <field name="payroll_tran_id" invisible="1"/>
+                                    <field name="timesheet_cost" invisible="1"/>
+                                    <field name="number_of_hours" />
+
+                                    <field name="allowance" sum="Total" string="Amount"/>
+                                    <field name="analytic_account" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_salary_rule_form" model="ir.ui.view">
+        <field name="name">hr.salary.rule.cus.form</field>
+        <field name="model">hr.salary.rule</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="od_payroll_item" />
+            </xpath>
+        </field>
+    </record>
+
+
+
+    <record id="hr_payroll_transactions_tree" model="ir.ui.view">
+        <field name="name">hr.payroll.transactions.tree</field>
+        <field name="model">hr.payroll.transactions</field>
+        <field name="arch" type="xml">
+            <tree string="Payroll Transactions" >
+                <field name="date_from"/>
+                <field name="name"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_payroll_transactions_action" model="ir.actions.act_window">
+        <field name="name">Payroll Transactions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.payroll.transactions</field>
+<!--        <field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="hr_payroll_transactions_action_config"
+            name="Payroll Transactions"
+            parent="hr_payroll.menu_hr_payroll_employees_root"
+            action="hr_payroll_transactions_action"
+            sequence="10"/>
+
+ <record id="hr_payslip_cus_tree" model="ir.ui.view">
+        <field name="name">hr.payslip.cus.tree</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook/page[2]" position="after">
+                <page string="Variance">
+                    <field name="hr_variance_line_id">
+                        <tree editable="top">
+                            <field name="date_value"/>
+                            <field name="payslip_id" invisible="1"/>
+                            <field name="rule_id"/>
+                            <field name="tran_id"/>
+                            <field name="tran_note"/>
+                            <field name="amount"/>
+                        </tree>
+                    </field>
+                </page>
+             </xpath>
+        </field>
+    </record>
+
+    <record id="hr_variance_line_form" model="ir.ui.view">
+        <field name="name">hr.variance.line.form</field>
+        <field name="model">hr.variance.line</field>
+        <field name="arch" type="xml">
+            <form string="Variance Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="payslip_id"/>
+                            <field name="amount" />
+                            <field name="tran_id" />
+                        </group>
+                        <group>
+                            <field name="date_value"/>
+                            <field name="tran_note" />
+                            <field name="rule_id" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_variance_line_tree" model="ir.ui.view">
+        <field name="name">hr.variance.line.tree</field>
+        <field name="model">hr.variance.line</field>
+        <field name="arch" type="xml">
+            <tree string="Variance Line">
+                <field name="payslip_id"/>
+                <field name="amount" />
+                <field name="tran_id" />
+                <field name="date_value"/>
+                <field name="tran_note" />
+                <field name="rule_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- view of payroll transaction Report -->
+    <record id="hr_payroll_tran_sheet_view_tree" model="ir.ui.view">
+        <field name="name">hr.payroll.tran.sheet.view.tree</field>
+        <field name="model">hr.payroll.tran.sheet.view</field>
+        <field name="arch" type="xml">
+            <tree string="Payroll transaction Report">
+                <field name="employee_id"/>
+                <field name="payroll_item"/>
+                <field name="description"/>
+                <field name="tran"/>
+                <field name="date"/>
+                <field name="amount" type="measure"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_payroll_tran_sheet_view_pivot" model="ir.ui.view">
+        <field name="name">hr.payroll.tran.sheet.view.pivot</field>
+        <field name="model">hr.payroll.tran.sheet.view</field>
+        <field name="arch" type="xml">
+            <pivot string="Payroll Transaction Report" disable_linking="True">
+                <field name="employee_id"/>
+                <field name="payroll_item"/>
+                <field name="description"/>
+                <field name="date"/>
+               <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="hr_payroll_tran_sheet_view_search" model="ir.ui.view">
+        <field name="name">hr.payroll.tran.sheet.view.search</field>
+        <field name="model">hr.payroll.tran.sheet.view</field>
+        <field name="arch" type="xml">
+            <search string="Entry Analysis">
+                <filter string="Employee" name="employee_id"/>
+                <filter string="Payroll Item" name="payroll_item"/>
+                <filter name="date"/>
+                <!-- <group expand="1" string="Group By">
+                    <filter string="Employee" name="Employee" context="{'group_by':'Employee'}"/>
+                    <filter string="Payroll Item" name="Payroll Item" context="{'group_by':'Payroll Item'}"/>
+                    <filter string="Date" context="{'group_by':'date'}"/>
+                </group> -->
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_payroll_tran_sheet_view_action" model="ir.actions.act_window">
+        <field name="name">Payroll Transactions Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.payroll.tran.sheet.view</field>
+<!--        <field name="view_type">form</field>-->
+        <field name="view_mode">tree,pivot</field>
+    </record>
+
+    <menuitem id="payroll_reporting_config"
+            name="Reporting"
+            parent="hr_payroll.menu_hr_payroll_employees_root"
+            sequence="11"/>
+
+    <menuitem id="hr_payroll_tran_sheet_view_action_config"
+            name="Payroll Transactions Report"
+            parent="payroll_reporting_config"
+            action="hr_payroll_tran_sheet_view_action"
+            sequence="2"/>
+
+</odoo>

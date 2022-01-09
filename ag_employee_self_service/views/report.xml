@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data >
+      <record id="new_paperformat_print_pack_certificates_report" model="report.paperformat">
+            <field name="name">Certificates</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40.00</field>
+            <field name="margin_bottom">32</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+      <record id="print_pack_certificates" model="ir.actions.report">
+         <field name="name">Certificates</field>
+         <field name="model">employee.self.service</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">ag_employee_self_service.report_print_pack</field>
+         <field name="report_file">ag_employee_self_service.report_print_pack</field>
+         <field name="paperformat_id" ref="ag_employee_self_service.new_paperformat_print_pack_certificates_report"/>
+     </record>
+
+       <record id="print_pack_certificates_new" model="ir.actions.report">
+         <field name="name">Certificatess</field>
+         <field name="model">employee.self.service</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">ag_employee_self_service.report_print_pack_new</field>
+         <field name="report_file">ag_employee_self_service.report_print_pack_new</field>
+         <field name="paperformat_id" ref="ag_employee_self_service.new_paperformat_print_pack_certificates_report"/>
+     </record>
+    </data>
+</odoo>

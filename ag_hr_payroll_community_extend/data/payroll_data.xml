@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="Deduction" model="hr.salary.rule.category">
+            <field name="name">Deduction</field>
+            <field name="code">DED</field>
+        </record>
+
+        <record id="Addition" model="hr.salary.rule.category">
+            <field name="name">Addition</field>
+            <field name="code">ADD</field>
+        </record>
+
+        <record id="Overtime" model="hr.salary.rule.category">
+            <field name="name">Overtime</field>
+            <field name="code">OT</field>
+        </record>
+
+
+         <record id="hr_payroll_community.hr_rule_hra" model="hr.salary.rule">
+            <field name="name">House Rent Allowance</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">HRA</field>
+            <field name="category_id" ref="hr_payroll_community.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">flag=False
+if contract.hr_allowance_line_ids:
+    for line in contract.hr_allowance_line_ids:
+        if line.rule_type.code == 'HRA':
+            flag = True
+result=flag
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">oth=0
+if contract.hr_allowance_line_ids:
+    for line in contract.hr_allowance_line_ids:
+        if line.rule_type.code == 'HRA':
+            oth+= line.amt
+result = oth
+            </field>
+        </record>
+
+       <record id="hr_payroll_community.hr_rule_basic" model="hr.salary.rule">
+            <field name="name">Basic Salary</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">BASIC</field>
+            <field name="category_id" ref="hr_payroll_community.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage
+            </field>
+        </record>
+
+         <record id="hr_payroll_community.hr_rule_travel" model="hr.salary.rule">
+            <field name="name">Travel Allowance</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">Travel</field>
+            <field name="category_id" ref="hr_payroll_community.ALW"/>
+            <field name="condition_select">python</field>
+           <field name="condition_python">flag=False
+if contract.hr_allowance_line_ids:
+    for line in contract.hr_allowance_line_ids:
+        if line.rule_type.code == 'Travel':
+            flag = True
+result=flag
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">oth=0
+if contract.hr_allowance_line_ids:
+    for line in contract.hr_allowance_line_ids:
+        if line.rule_type.code == 'Travel':
+            oth+= line.amt
+result=oth
+            </field>
+        </record>
+
+      <record id="hr_payroll_community.hr_rule_other" model="hr.salary.rule">
+            <field name="name">Other Allowance</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">Other</field>
+            <field name="category_id" ref="hr_payroll_community.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">flag=False
+if contract.hr_allowance_line_ids:
+    for line in contract.hr_allowance_line_ids:
+        if line.rule_type.code == 'Other':
+            flag = True
+result=flag
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">oth=0
+if contract.hr_allowance_line_ids:
+    for line in contract.hr_allowance_line_ids:
+        if line.rule_type.code == 'Other':
+            oth+= line.amt
+result=oth
+            </field>
+      </record>
+
+      <record id="hr_rule_ded" model="hr.salary.rule">
+            <field name="name">Deduction</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">DED</field>
+            <field name="category_id" ref="ag_hr_payroll_community_extend.Deduction"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">flag=False
+if payslip.hr_variance_line_id:
+    for line in payslip.hr_variance_line_id:
+        if line.rule_id.code == 'DED':
+            flag = True
+result=flag
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result=0
+if payslip.hr_variance_line_id:
+    for line in payslip.hr_variance_line_id:
+        if line.rule_id.code == 'DED':
+            result = result - line.amount
+            </field>
+      </record>
+
+      <record id="hr_rule_add" model="hr.salary.rule">
+            <field name="name">Addition</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">ADD</field>
+            <field name="category_id" ref="ag_hr_payroll_community_extend.Addition"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">flag=False
+if payslip.hr_variance_line_id:
+    for line in payslip.hr_variance_line_id:
+        if line.rule_id.code == 'ADD':
+            flag = True
+result=flag
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result=0
+if payslip.hr_variance_line_id:
+    for line in payslip.hr_variance_line_id:
+        if line.rule_id.code == 'ADD':
+            result = result + line.amount
+
+            </field>
+      </record>
+
+       <record id="hr_rule_ot" model="hr.salary.rule">
+            <field name="name">Overtime</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">OT</field>
+            <field name="category_id" ref="ag_hr_payroll_community_extend.Overtime"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">flag=False
+if payslip.hr_variance_line_id:
+    for line in payslip.hr_variance_line_id:
+        if line.rule_id.code == 'OT':
+            flag = True
+result=flag
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result=0
+if payslip.hr_variance_line_id:
+    for line in payslip.hr_variance_line_id:
+        if line.rule_id.code == 'OT':
+            result = result + line.amount
+
+            </field>
+      </record>
+
+
+
+
+    </data>
+</odoo>

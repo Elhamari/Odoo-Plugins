@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <data>
+
+
+        <!-- Hr employee inherit Legal Leaves -->
+        <record id="ag_view_employee_form_leave_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.leave.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" name="action_view_earned_leaves" type="object" icon="fa-calendar">
+                        <field string="Annual Balance" name="earned_leaves_count" widget="statinfo" />
+                    </button>
+                </div>
+            </field>
+        </record>
+
+        <!-- Hr employee Leaves Left Hide-->
+        <record id="view_employee_form_leave_inherit_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.leave.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_holidays.view_employee_form_leave_inherit"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@icon='fa-calendar']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_time_off_dashboard']" position="replace">
+                   <button name="action_time_off_dashboard"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-calendar"
+                        attrs="{'invisible': [('show_leaves','=', False)]}"
+                        context="{'search_default_employee_id': active_id}"
+                        groups="base.group_user"
+                        help="Remaining leaves">
+                    <div class="o_field_widget o_stat_info">
+                        <!--<span class="o_stat_value">
+                            <field name="allocation_used_display"/>/<field name="allocation_display"/> Days
+                        </span>-->
+                        <span class="o_stat_text">
+                            Leave Details
+                        </span>
+                    </div>
+                </button>
+                </xpath>
+            </field>
+        </record>
+   </data>
+</odoo>
