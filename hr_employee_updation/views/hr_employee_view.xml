@@ -27,7 +27,7 @@
                 <xpath expr="//page[@name='personal_information']/group/group[2]" position="after">
                     <group string="Work Experience">
                         <field name="yrs_of_exp" />
-
+                        <field name="religion"/>
                     </group>
                 </xpath>
                 <xpath expr="//field[@name='category_ids']" position="replace">
@@ -104,6 +104,47 @@
                 </xpath>
             </field>
          </record>
+
+        <record id="view_employee_religion_form" model="ir.ui.view">
+             <field name="name">hr.employee.religion.form</field>
+             <field name="model">hr.religion</field>
+             <field name="arch" type="xml">
+                 <form string="Employee Religion">
+                     <sheet>
+                         <group>
+                             <field name="name"/>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_employee_religion_list" model="ir.ui.view">
+             <field name="name">hr.employee.religion.list</field>
+             <field name="model">hr.religion</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Employees Religion" editable="bottom">
+                     <field name="name"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="open_view_religion_form" model="ir.actions.act_window">
+             <field name="name">Employee Religion</field>
+             <field name="res_model">hr.religion</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+
+        <menuitem
+            id="menu_view_employee_religion_form"
+            name="Religion Types"
+            action="open_view_religion_form"
+            parent="hr.menu_human_resources_configuration"
+            groups="base.group_no_one"
+            sequence="3"/>
+
 
         <!--  <record id="hr_employee_inherited_search_view" model="ir.ui.view">
             <field name="name">hr.employee.inherited.search.view</field>

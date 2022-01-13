@@ -42,6 +42,16 @@ class HrEmployeeFamilyInfo(models.Model):
     birth_date = fields.Date(string="DOB", tracking=True)
 
 
+class HrReligion(models.Model):
+    _name = "hr.religion"
+    _description = "Employee Religion"
+
+    name = fields.Char(string="Name", required=True)
+
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', "Tag name already exists !"),
+    ]
+
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
@@ -105,6 +115,7 @@ class HrEmployee(models.Model):
     # asset_count = fields.Integer(compute='_asset_count', string='# Assets')
     eid = fields.Char('Emirates ID', tracking=True)
     yrs_of_exp = fields.Integer('Years Of Experience', tracking=True)
+    religion = fields.Many2one('hr.religion', string='Religion', tracking=True)
 
     job_title = fields.Char("Job Title", compute="_compute_job_title", store=True, readonly=False, tracking=True)
     department_id = fields.Many2one('hr.department', 'Department', tracking=True,
