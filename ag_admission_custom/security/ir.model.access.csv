@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_attitude_test_manager,attitude.test,model_attitude_test,base.group_user,1,1,1,1
+access_certificate_type_manager,certificate.type,model_certificate_type,base.group_user,1,1,1,1
+access_institute_type_manager,institute.type,model_institute_type,base.group_user,1,1,1,1
+access_parent_list_manager,parent.list,model_parent_list,base.group_user,1,1,1,1
+access_sector_type_manager,sector.type,model_sector_type,base.group_user,1,1,1,1
+access_employer_type_manager,employer.type,model_employer_type,base.group_user,1,1,1,1
+access_case_type_manager,case.type,model_case_type,base.group_user,1,1,1,1
+access_test_type_manager,test.type,model_test_type,base.group_user,1,1,1,1
+access_multi_address_manager,multi.address,model_multi_address,base.group_user,1,1,1,1

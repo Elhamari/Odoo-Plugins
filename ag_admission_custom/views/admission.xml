@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- admission application part -->
+            <record model="ir.ui.view" id="op_admission_customized_form">
+                <field name="name">op.admission.customized.form</field>
+                <field name="model">op.admission</field>
+                <field name="inherit_id" ref="openeducat_admission.view_op_admission_form"/>
+                <field name="arch" type="xml">
+                    <label for="street" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </label>
+                    <xpath expr="//field[@name='street']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='street2']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='zip']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='state_id']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='country_id']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='city']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='phone']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='mobile']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='title']" position="before">
+                        <!-- <label for="application_num" class="oe_edit_only"/><br/> -->
+                        <field name="application_num" style="width: 50%"/><br/>
+                    </xpath>
+                    <xpath expr="//page[@name='personal_detail']//field[@name='gender']" position="before">
+                        <field name="nationality" />
+                        <field name="place_of_birth" />
+                    </xpath>
+                    <xpath expr="//page[@name='personal_detail']//field[@name='birth_date']" position="after">
+                        <field name="maturity_status" />
+                    </xpath>
+                    <xpath expr="//page[@name='personal_detail']//group[1]" position="after">
+                        <group>
+                            <group string="Passport Details">
+                                <field name="passport_number" />
+                                <field name="passport_country_issue" />
+                                <field name="passport_issued_date" />
+                                <field name="passport_end_date" />
+                            </group>
+                            <group string="EID Details">
+                                <field name="eid_number" />
+                                <field name="eid_end_date" />
+                                <field name="uid" />
+                            </group>
+                            <group string="Residency Details">
+                                <field name="residency_number" />
+                                <field name="residency_state" />
+                                <field name="residency_issued_date" />
+                                <field name="residency_end_date" />
+                            </group>
+
+                        </group>
+                    </xpath>
+                    <xpath expr="//page[@name='personal_detail']" position="after">
+                        <page name="secondary_school" string="Secondary School">
+                            <group>
+                                <group>
+                                    <field name="score" />
+                                    <field name="certificate_type" />
+                                    <field name="school_name" />
+                                    <field name="school_system" />
+                                </group>
+                                <group>
+                                    <field name="institute_type" />
+                                    <field name="certificate_origin" />
+                                    <field name="sec_issued_date" />
+                                    <field name="sec_state" />
+                                    
+                                </group>
+                            </group>
+                        </page>
+                        <page name="parent_list" string="Parents">
+                            <field name="parent_ids" >
+                                <tree editable="bottom">
+                                    <field name="admission_id" invisible="1"/>
+                                    <field name="name" />
+                                    <field name="relation" />
+                                    <field name="place_of_residence" />
+                                    <field name="work_place" />
+                                    <field name="parent_mob_no" widget="phone"/>
+                                    <field name="parent_work_phone" widget="phone"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="documents" string="Documents">
+                            <group>
+                                <group>
+                                    <field name="personal_photo_bol" />
+                                    <field name="cert_of_good_conduct_bol" />
+                                    <field name="medical_check_bol" />
+                                    <field name="passport_photo_bol" />
+                                    <field name="birthday_cert_bol" />
+                                    <field name="pledge_bol" />
+                                </group>
+                                <group>
+                                    <field name="personal_photo"  attrs="{'readonly':[('personal_photo_bol','=',False)]}"/>
+                                    <field name="cert_of_good_conduct" attrs="{'readonly':[('cert_of_good_conduct_bol','=',False)]}"/>
+                                    <field name="medical_check" attrs="{'readonly':[('medical_check_bol','=',False)]}"/>
+                                    <field name="passport_photo" attrs="{'readonly':[('passport_photo_bol','=',False)]}"/>
+                                    <field name="birthday_cert" attrs="{'readonly':[('birthday_cert_bol','=',False)]}"/>
+                                    <field name="pledge" attrs="{'readonly':[('pledge_bol','=',False)]}"/>
+                                    
+                                </group>
+                            </group>
+                        </page>
+                        <page name="work_details" string="Work Details">
+                            <group>
+                                <group>
+                                    <field name="sector_type" />
+                                    <field name="employer_type" />
+                                    <field name="job_tel" widget="phone"/>
+                                    <field name="job_fax" />
+                                </group>
+                                <group>
+                                    <field name="job_name" />
+                                    <field name="job_country" />
+                                    <field name="job_email" />
+                                    <field name="job_notes" />
+                                    
+                                </group>
+                            </group>
+                        </page>
+                        <page name="address_details" string="Address Details">
+                            <field name="multi_address" >
+                                <tree >
+                                    <field name="admission_id" invisible="1"/>
+                                    <field name="street" />
+                                    <field name="street2" />
+                                    <field name="city" />
+                                    <field name="zip" />
+                                    <field name="phone" widget="phone"/>
+                                    <field name="mobile" widget="phone"/>
+                                    <field name="state_id"/>
+                                    <field name="country_id"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <label for="street" string="Address"/>
+                                        <div>
+                                            <field name="street" placeholder="Street..."/>
+                                            <field name="street2"/>
+                                            <div class="address_format">
+                                                <field name="city" placeholder="City" style="width: 40%"/>
+                                                <field name="state_id" options="{&quot;no_open&quot;: True}" placeholder="State" style="width: 24%"/>
+                                                <field name="zip" placeholder="ZIP" style="width: 34%"/>
+                                            </div>
+                                            <field name="country_id" placeholder="Country" options="{&quot;no_open&quot;: True}"/>
+                                            <field name="phone" placeholder="Phone"/>
+                                            <field name="mobile" placeholder="Mobile"/>
+                                        </div>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page name="special_cases" string="Special Cases">
+                            <group>
+                                <group>
+                                    <field name="case_type" />
+                                </group>
+                                <group>
+                                    <field name="case_name" />
+                                </group>
+                            </group>
+                        </page>
+                        <page name="attitude_test" string="Attitude Test">
+                            <field name="attitude_line" >
+                                <tree editable="bottom">
+                                    <field name="admission_id" invisible="1"/>
+                                    <field name="date" />
+                                    <field name="test_type" />
+                                    <field name="score" />
+                                </tree>
+                            </field>
+                        </page>
+                    </xpath>
+
+                </field>
+            </record>
+        <!-- admission application part -->
+
+        <!-- admission Configuration List part -->
+            <!-- Attitude test types -->
+                <record id="view_test_type_tree" model="ir.ui.view">
+                    <field name="name">view.test.type.tree</field>
+                    <field name="model">test.type</field>
+                    <field name="arch" type="xml">
+                        <tree string="Attitude Test Types">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </record>
+
+
+                <record id="view_test_type_form" model="ir.ui.view">
+                    <field name="name">view.test.type.form</field>
+                    <field name="model">test.type</field>
+                    <field name="arch" type="xml">
+                        <form string="Attitude Test Types">
+                            <sheet>
+                                <div class="oe_title">
+                                    <label for="name"/><br/>
+                                    <h1>
+                                        <field name="name" />
+                                    </h1>
+                                </div>
+
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+                <record id="action_test_type" model="ir.actions.act_window">
+                    <field name="name">Attitude Tests Types</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">test.type</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="view_id" eval="False"/>
+                    <field name="domain">[]</field>
+                    <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                            Click to create a new Employee self service.
+                        </p><p>
+                            Use this menu to browse employee service. T
+                        </p>
+                    </field>
+                </record>
+            <!-- Attitude test types -->
+            <!-- Certificate types -->
+                <record id="view_certificate_type_tree" model="ir.ui.view">
+                    <field name="name">view.certificate.type.tree</field>
+                    <field name="model">certificate.type</field>
+                    <field name="arch" type="xml">
+                        <tree string="Certificate Types">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </record>
+
+
+                <record id="view_certificate_type_form" model="ir.ui.view">
+                    <field name="name">view.certificate.type.form</field>
+                    <field name="model">certificate.type</field>
+                    <field name="arch" type="xml">
+                        <form string="Certificate Types">
+                            <sheet>
+                                <div class="oe_title">
+                                    <label for="name"/><br/>
+                                    <h1>
+                                        <field name="name" />
+                                    </h1>
+                                </div>
+
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+                <record id="action_certificate_type" model="ir.actions.act_window">
+                    <field name="name">Certificate Types</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">certificate.type</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="view_id" eval="False"/>
+                    <field name="domain">[]</field>
+                    <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                            Click to create a new Employee self service.
+                        </p><p>
+                            Use this menu to browse employee service. T
+                        </p>
+                    </field>
+                </record>
+            <!--Certificate types -->
+            <!-- institute types -->
+                <record id="view_institute_type_tree" model="ir.ui.view">
+                    <field name="name">view.institute.type.tree</field>
+                    <field name="model">institute.type</field>
+                    <field name="arch" type="xml">
+                        <tree string="Institute Types">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </record>
+
+
+                <record id="view_institute_type_form" model="ir.ui.view">
+                    <field name="name">view.institute.type.form</field>
+                    <field name="model">institute.type</field>
+                    <field name="arch" type="xml">
+                        <form string="Institute Types">
+                            <sheet>
+                                <div class="oe_title">
+                                    <label for="name"/><br/>
+                                    <h1>
+                                        <field name="name" />
+                                    </h1>
+                                </div>
+
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+                <record id="action_institute_type" model="ir.actions.act_window">
+                    <field name="name">Institute Types</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">institute.type</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="view_id" eval="False"/>
+                    <field name="domain">[]</field>
+                    <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                            Click to create a new Employee self service.
+                        </p><p>
+                            Use this menu to browse employee service. T
+                        </p>
+                    </field>
+                </record>
+            <!-- institute types -->
+            <!-- sector types -->
+                <record id="view_sector_type_tree" model="ir.ui.view">
+                    <field name="name">view.sector.type.tree</field>
+                    <field name="model">sector.type</field>
+                    <field name="arch" type="xml">
+                        <tree string="Sector Types">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </record>
+
+
+                <record id="view_sector_type_form" model="ir.ui.view">
+                    <field name="name">view.sector.type.form</field>
+                    <field name="model">sector.type</field>
+                    <field name="arch" type="xml">
+                        <form string="Sector Types">
+                            <sheet>
+                                <div class="oe_title">
+                                    <label for="name"/><br/>
+                                    <h1>
+                                        <field name="name" />
+                                    </h1>
+                                </div>
+
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+                <record id="action_sector_type" model="ir.actions.act_window">
+                    <field name="name">Sector Types</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">sector.type</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="view_id" eval="False"/>
+                    <field name="domain">[]</field>
+                    <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                            Click to create a new Employee self service.
+                        </p><p>
+                            Use this menu to browse employee service. T
+                        </p>
+                    </field>
+                </record>
+            <!-- sector types -->
+            <!-- employer types -->
+                <record id="view_employer_type_tree" model="ir.ui.view">
+                    <field name="name">view.employer.type.tree</field>
+                    <field name="model">employer.type</field>
+                    <field name="arch" type="xml">
+                        <tree string="Employer Types">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </record>
+
+
+                <record id="view_employer_type_form" model="ir.ui.view">
+                    <field name="name">view.employer.type.form</field>
+                    <field name="model">employer.type</field>
+                    <field name="arch" type="xml">
+                        <form string="Employer Types">
+                            <sheet>
+                                <div class="oe_title">
+                                    <label for="name"/><br/>
+                                    <h1>
+                                        <field name="name" />
+                                    </h1>
+                                </div>
+
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+                <record id="action_employer_type" model="ir.actions.act_window">
+                    <field name="name">Employer Types</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">employer.type</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="view_id" eval="False"/>
+                    <field name="domain">[]</field>
+                    <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                            Click to create a new Employee self service.
+                        </p><p>
+                            Use this menu to browse employee service. T
+                        </p>
+                    </field>
+                </record>
+            <!-- employer types -->
+            <!-- case types -->
+                <record id="view_case_type_tree" model="ir.ui.view">
+                    <field name="name">view.case.type.tree</field>
+                    <field name="model">case.type</field>
+                    <field name="arch" type="xml">
+                        <tree string="Case Types">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </record>
+
+
+                <record id="view_Case_type_form" model="ir.ui.view">
+                    <field name="name">view.case.type.form</field>
+                    <field name="model">case.type</field>
+                    <field name="arch" type="xml">
+                        <form string="Employer Types">
+                            <sheet>
+                                <div class="oe_title">
+                                    <label for="name"/><br/>
+                                    <h1>
+                                        <field name="name" />
+                                    </h1>
+                                </div>
+
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+                <record id="action_case_type" model="ir.actions.act_window">
+                    <field name="name">Case Types</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">case.type</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="view_id" eval="False"/>
+                    <field name="domain">[]</field>
+                    <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                            Click to create a new Employee self service.
+                        </p><p>
+                            Use this menu to browse employee service. T
+                        </p>
+                    </field>
+                </record>
+            <!-- case types -->
+
+            <menuitem name="Configuration" id="menu_configuration_main" sequence="100"
+                    parent="openeducat_admission.menu_op_admission_root" />
+            <menuitem name="Attitude Test Types" id="menu_action_test_type" sequence="1"
+                    parent="menu_configuration_main"  action="action_test_type"/>
+            <menuitem name="Certificate Types" id="menu_action_certificate_type" sequence="2"
+                    parent="menu_configuration_main"  action="action_certificate_type"/>
+            <menuitem name="Institute Types" id="menu_action_institute_type" sequence="3"
+                    parent="menu_configuration_main"  action="action_institute_type"/>
+            <menuitem name="Sector Types" id="menu_action_sector_type" sequence="4"
+                    parent="menu_configuration_main"  action="action_sector_type"/>
+            <menuitem name="Employer Types" id="menu_action_employer_type" sequence="5"
+                    parent="menu_configuration_main"  action="action_employer_type"/>
+            <menuitem name="Case Types" id="menu_action_case_type" sequence="6"
+                    parent="menu_configuration_main"  action="action_case_type"/>
+
+        <!-- admission Configuration List part -->
+         
+
+    </data>
+</odoo>
