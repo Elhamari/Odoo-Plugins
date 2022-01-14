@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_employee_settlement_document">
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+<!--        <div class="page" style="margin-left:25px;font-size:13px;font-family: Calibri;">-->
+            <style type="text/css">
+                @font-face {
+                  font-family: 'PWSignaturetwo';
+                  font-style: heavy;
+                  font-weight: 400;
+                  src: url(AG_final_settlement/static/src/fonts/PWSignaturetwo.ttf) format('truetype');
+                }
+            </style>
+            <div class="oe_structure"/>
+                <!-- <span>Date:  <b><span t-field="doc.date_order" t-options-widget="&quot;date&quot;" class="mb6"/></b></span><br/><br/> -->
+                <div class="mb0"><h4 style="text-align: center;padding-top:5px;"><b>SETTLEMENT FORM</b></h4></div><br/><br/>
+                <div style="margin-left:600px;"><span><b>Date:</b></span>&#160;<span t-field="o.date"/> <br/>
+                    <span><b>Ref:</b></span>&#160;<span t-field="o.name"/>
+                </div><br/><br/>
+
+            <div class="oe_structure"/>
+<!--        </div>-->
+        <!-- new page -->
+        <div class="page" style="margin-left:25px;font-size:16px;font-family: Calibri;">
+            <div class="oe_structure"/>
+
+             <table style="border-collapse: collapse;width:100%;font-size: 15px;">
+                <!--<thead >
+
+                    <tr style="border: 1px solid black;padding:5px">
+                        <th style="border: 1px solid black;padding:5px" name="th_description" class="text-left">Product</th>
+                        <th style="border: 1px solid black;padding:5px" name="th_serial" class="text-left">Serial No. / EMEI</th>
+                        &lt;!&ndash;<th class="text-center" style="padding:5px;border: 1px solid black;border-top:0;width:10%;color:black;font-size:13px;text-align: center;">Purchase AC</th>&ndash;&gt;
+                        <th style="border: 1px solid black;padding:5px" name="th_remarks" class="text-left">Remarks</th>
+                    </tr>
+                </thead>-->
+                 <tbody>
+
+                     <tr style="border: 1px solid black;padding:5px">
+                         <td style="padding:5px;" colspan="4"><b>EMPLOYEE DETAILS</b></td>
+                     </tr>
+                    <tr style="border: 1px solid black;padding:5px">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span>Employee</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span t-field="o.employee_id.name"/>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span>Department</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span t-field="o.department_id.name"/>
+                        </td>
+
+
+
+                    </tr>
+
+                     <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span>Designation</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span t-field="o.job_id.name"/>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span>Basic Salary</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span t-field="o.basic"/>
+                        </td>
+
+
+
+                    </tr>
+
+                      <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span>Joining Date</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span t-field="o.join_date"/>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span>Resign Date</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span t-field="o.resign_date"/>
+                        </td>
+
+
+
+                    </tr>
+                     <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span>Settlement Type</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span t-field="o.settlement_type_id"/>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span>Last Working Date</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;" class="text-left">
+                            <span t-field="o.last_date"/>
+                        </td>
+
+
+
+                    </tr>
+<!--                        <t t-set="i" t-value="i + 1"/>-->
+
+                </tbody>
+            </table><br/>
+            <br/>
+
+
+            <table style="border-collapse: collapse;width:100%;font-size: 15px;">
+                <!--<thead >
+
+                    <tr style="border: 1px solid black;padding:5px">
+                        <th style="border: 1px solid black;padding:5px" name="th_description" class="text-left">Product</th>
+                        <th style="border: 1px solid black;padding:5px" name="th_serial" class="text-left">Serial No. / EMEI</th>
+                        &lt;!&ndash;<th class="text-center" style="padding:5px;border: 1px solid black;border-top:0;width:10%;color:black;font-size:13px;text-align: center;">Purchase AC</th>&ndash;&gt;
+                        <th style="border: 1px solid black;padding:5px" name="th_remarks" class="text-left">Remarks</th>
+                    </tr>
+                </thead>-->
+                 <tbody>
+
+                     <tr style="border: 1px solid black;padding:5px;">
+                         <td style="padding:5px;" colspan="2"><b>SETTLEMENT DETAILS</b></td>
+                     </tr>
+                    <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;width:50%" class="text-left">
+                            <span>Leave Balance</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;text-align:right;">
+                            <span t-field="o.available_days" />
+                        </td>
+<!--                        <td style="border: 1px solid black;padding:5px;text-align:right;">-->
+<!--                            <span t-field="o.amount" t-options="{&quot;widget&quot;:&quot;float&quot;,&quot;precision&quot;:2}"/>-->
+<!--                        </td>-->
+
+
+
+
+                    </tr>
+
+                     <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;width:50%" class="text-left">
+                            <span>No. Of Days Pending Salary</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;text-align:right;">
+                            <span t-field="o.duration" />
+                        </td>
+<!--                        <td style="border: 1px solid black;padding:5px;text-align:right;">-->
+<!--                            <span t-field="o.amount" t-options="{&quot;widget&quot;:&quot;float&quot;,&quot;precision&quot;:2}"/>-->
+<!--                        </td>-->
+
+
+
+
+                    </tr>
+
+
+
+                      <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;width:20%;" class="text-left">
+                            <span>Eligible Leave Salary Amount</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;text-align:right;">
+                            <span t-field="o.fs_gross_available_days" t-options="{&quot;widget&quot;:&quot;float&quot;,&quot;precision&quot;:2}"/>
+                        </td>
+
+
+
+                    </tr>
+                     <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;width:20%;" class="text-left">
+                            <span>Pending Salary Amount</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;text-align:right;">
+                            <span t-field="o.pending_leave_sal" t-options="{&quot;widget&quot;:&quot;float&quot;,&quot;precision&quot;:2}"/>
+                        </td>
+
+
+
+                    </tr>
+
+                      <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;width:20%;" class="text-left">
+                            <span>Total Deductions</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;text-align:right;">
+                            <span t-field="o.total_dec_amt" t-options="{&quot;widget&quot;:&quot;float&quot;,&quot;precision&quot;:2}"/>
+                        </td>
+
+
+
+                    </tr>
+                      <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;width:20%;" class="text-left">
+                            <span>Total Additions</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;text-align:right;">
+                            <span t-field="o.total_add_amt" t-options="{&quot;widget&quot;:&quot;float&quot;,&quot;precision&quot;:2}"/>
+                        </td>
+
+
+
+                    </tr>
+                       <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;width:20%;" class="text-left">
+                            <span>Gratuity Amount</span>
+                        </td>
+                        <td style="border: 1px solid black;padding:5px;text-align:right;">
+                            <span t-field="o.final_settlement_amount" t-options="{&quot;widget&quot;:&quot;float&quot;,&quot;precision&quot;:2}"/>
+                        </td>
+
+
+
+                    </tr>
+                    <tr style="border: 1px solid black;padding:5px;">
+                        <!--<td class="text-center" style="padding:3px;border-left: 1px solid black;border-right: 1px solid black;width:5%;vertical-align: top;text-align: center;">
+                            <span t-esc="i"/>
+                        </td>-->
+                        <td style="border: 1px solid black;padding:5px;width:20%;" class="text-left">
+                            <span style="font-weight:bold;">Total Payment</span>
+                        </td>
+                       <td style="border: 1px solid black;padding:5px;text-align:right;">
+                            <span style="font-weight:bold;" t-field="o.final_payment" t-options="{&quot;widget&quot;:&quot;float&quot;,&quot;precision&quot;:2}"/>
+                        </td>
+
+
+
+                    </tr>
+
+<!--                        <t t-set="i" t-value="i + 1"/>-->
+
+                </tbody>
+            </table><br/>
+
+
+           <!-- <div style="width: 100%;overflow: hidden;left-margin:60px;" class="mt3">
+                  <div style="width: 50%;float:left;">
+                      <span style="border-bottom:1px dashed black;padding-bottom:3px;width:50%;padding-left:15px;">&#160;</span><br/><br/><br/>
+                      <span class="col-12 mt20" style="border-top: 1px solid black;width:50px;">&#160;</span><br/><br/><br/>
+                      <span style="left-margin:60px;">With Thanks,  </span><br/><br/><br/>
+                      &lt;!&ndash;<span>Email:  <span t-field="res_company.email"/></span><br/>&ndash;&gt;
+
+                  </div>
+                  <div style="width: 50%;overflow: hidden;">
+                      <span style="left-margin:60px;"><b>Employee Signature :</b></span><br/><br/><br/>
+                      <span style="left-margin:60px;"><b>Date :</b></span><br/><br/><br/>
+                  </div>
+            </div>-->
+
+            <table class="mt32 mb64" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">
+
+                        <tr>
+                            <td><span style="font-size:16px;font-weight:bold;">Authorized and Approved By:</span></td>
+                        </tr>
+                         <tr>
+                            <td> &#160;</td>
+                        </tr>
+
+                        <tr style="padding-top:30%;">
+
+
+                            <td style="border-bottom:1px solid black;padding-bottom:3px;width:30%;padding-left:15px;">
+                               &#160;
+                            </td>
+                            <td style="width:30%;">
+                                 &#160;
+                            </td>
+
+                            <td style="border-bottom:1px solid black;padding-bottom:3px;width:30%;">
+                                 &#160;
+                            </td>
+
+
+
+                        </tr>
+
+                       <!-- <tr style="padding-top:50%;">
+                            <td><span style="font-size:16px;"><b>Ziad Ghaloul</b></span></td>
+                            <td style="width:30%;">
+                                 &#160;
+                            </td>
+                            <td>
+                                <span style="font-size:16px;"><b>Marianne Ibarra</b> </span>
+                            </td>
+                        </tr>-->
+                        <tr style="padding-top:50%;">
+                            <td><span style="font-size:16px;">Founder-CEO</span></td>
+                            <td style="width:30%;">
+                                 &#160;
+                            </td>
+                            <td>
+                                <span style="font-size:16px;">HR and Office Manager </span>
+                            </td>
+                        </tr>
+                     </table>
+            <br/><br/>
+
+             <table class="mt32 mb64" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">
+
+                        <tr>
+                            <td><span style="font-size:16px;font-weight:bold;">Received By:</span></td>
+                        </tr>
+                         <tr>
+                            <td> &#160;</td>
+                        </tr>
+
+                        <tr >
+
+
+                            <td style="border-bottom:1px solid black;padding-bottom:3px;width:10%;padding-left:15px;">
+                               &#160;
+                            </td>
+
+
+
+
+                        </tr>
+
+                        <tr>
+                            <td><span style="font-size:16px;"><b>Employee Name</b></span></td>
+                            <td style="width:30%;">
+                                 &#160;
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><span style="font-size:16px;">Date :</span></td>
+                            <td style="width:30%;">
+                                 &#160;
+                            </td>
+
+                        </tr>
+                     </table>
+            <br/>
+
+
+            <div class="oe_structure"/>
+        </div>
+        </t>
+    </t>
+    </t>
+    </template>
+
+
+
+
+    </data>
+</odoo>

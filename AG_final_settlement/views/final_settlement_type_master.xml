@@ -42,7 +42,7 @@
 		    </form>
 		  </field>
 		 </record>
-<record model="ir.actions.act_window" id="action_final_settlement_type_master">
+    <record model="ir.actions.act_window" id="action_final_settlement_type_master">
         <field name="name">Settlement Type</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">final.settlement.type.master</field>
@@ -55,8 +55,7 @@
         </field>
     </record>
 
-<menuitem id="menu_od_final_settlement_type_master" name="Settlement Type" action="action_final_settlement_type_master" parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration" sequence="38"/>
-
+    <menuitem id="menu_od_final_settlement_type_master" name="Settlement Type" action="action_final_settlement_type_master" parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration" sequence="38"/>
 
 
  </data>

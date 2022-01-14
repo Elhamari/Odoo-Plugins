@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+
+        <record id="action_setlle_reports" model="ir.actions.report">
+            <field name="name">Settlement Report</field>
+            <field name="model">final.settlement</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">AG_final_settlement.report_employee_settlement_document</field>
+            <field name="report_file">AG_final_settlement.report_employee_settlement_document</field>
+            <field name="print_report_name">'Employee Settlement - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="AG_final_settlement.model_final_settlement"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+    </data>
+</odoo>

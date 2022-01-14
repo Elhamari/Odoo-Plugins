@@ -16,12 +16,15 @@
         'static/src/img/main-screenshot.png'
     ],
 
-    'depends': ['base', 'hr_payroll', 'hr_contract','AG_hr_payroll_transactions','hr_holidays'],
+    'depends': ['base', 'hr_payroll', 'hr_contract','hr_holidays'],
     'data': [
                 'security/ir.model.access.csv',
                 'data/data.xml',
                 'views/final_settlement_view.xml',
                 'views/final_settlement_type_master.xml',
+                'wizard/refuse_reason.xml',
+                'report/settlement_report.xml',
+                'report/report_menu.xml'
     
     ],
     'price':'20',

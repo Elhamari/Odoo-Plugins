@@ -30,11 +30,11 @@
     """,
     'author': 'APPSGATE FZC LLC',
     'company': 'APPSGATE FZC LLC',
-    'depends': ['base', 'hr', 'hr_payroll','hr_contract'],
+    'depends': ['base', 'hr', 'hr_payroll','hr_contract','l10n_ae_hr_payroll'],
     'data': [
 
         'security/ir.model.access.csv',
-        'data/payroll_data.xml',
+        #'data/payroll_data.xml',
         'views/hr_contract.xml'
 
     ],

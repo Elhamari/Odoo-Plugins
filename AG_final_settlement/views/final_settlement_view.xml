@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="hr_contract_view_form_inherit" model="ir.ui.view">
-                <field name="name">hr.contract.form.inherit</field>
-                <field name="model">hr.contract</field>
-                <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
-                <field name="arch" type="xml">
-                <field name="structure_type_id" position="after">
-                    <field name="contract_type"/>
-                </field>
-                </field>
-        </record>
+<!--        <record id="hr_contract_view_form_inherit" model="ir.ui.view">-->
+<!--                <field name="name">hr.contract.form.inherit</field>-->
+<!--                <field name="model">hr.contract</field>-->
+<!--                <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>-->
+<!--                <field name="arch" type="xml">-->
+<!--                <field name="struct_id" position="after">-->
+<!--                    <field name="contract_type"/>-->
+<!--                </field>-->
+<!--                </field>-->
+<!--        </record>-->
 
 
         <record model="ir.ui.view" id="final_settlement_tree_view">
@@ -43,8 +43,8 @@
 
                     <button name="action_validate" type="object" string="Validate" states="progress" invisible="1"/>
                     <button name="action_progress" type="object" string="Submit"  states="draft" class="oe_highlight"/>
-                    <button name="action_approve" type="object" string="Approve"  states="progress" class="oe_highlight" groups="ag_hr_updates.group_bonus_top_managment"/>
-                    <button name="action_reject" string="Reject" type="object" states="progress" class="oe_highlight" groups="ag_hr_updates.group_bonus_top_managment"/>
+                    <button name="action_approve" type="object" string="Approve"  states="progress" class="oe_highlight" groups="hr.group_hr_manager"/>
+                    <button name="action_reject_wizard" string="Reject" type="object" states="progress" class="oe_highlight" groups="hr.group_hr_manager"/>
                     <button name="action_reset" string="Reset To Draft" type="object" states="reject" class="oe_highlight"/>
 
                     <button name="create_settlement_payment" type="object" string="Create Payments"  states="done" class="oe_highlight" groups="account.group_account_invoice"/>
@@ -56,13 +56,13 @@
                </header>
                <sheet>
 
-                <div name="button_box"  class="oe_button_box">
+                <!--<div name="button_box"  class="oe_button_box">
                     <button name="action_view_payslip" type="object"
                             class="oe_stat_button" icon="fa-dollar" widget="statinfo" string="Payslips">
-<!--                            <field name="active" widget="boolean_button"-->
-    <!--                                options='{"terminology": "archive"}'/>-->
+&lt;!&ndash;                            <field name="active" widget="boolean_button"&ndash;&gt;
+    &lt;!&ndash;                                options='{"terminology": "archive"}'/>&ndash;&gt;
                     </button>
-                </div>
+                </div>-->
 
                  <div class="oe_title">
                         <label for="name"/>
@@ -91,13 +91,13 @@
                                         <field name="employee_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                         <field name="department_id" readonly="1" force_save="1"/>
                                         <field name="job_id" readonly="1"/>
-                                        <field name="basic" string="Employee Basic Salary" readonly="1"/>
+                                        <field name="basic" string="Employee Salary" readonly="1"/>
                                         <field name="address_home_id" invisible="1"/>
                                          <field name="join_date" string="Join Date" readonly="1"/>
-
+<!--                                         <field name="resignation_id" readonly="1"/>-->
                                     </group>
-                                     <label for="refuse_reason" /><br/>
-                                    <field name="refuse_reason" nolabel="1" attrs="{'readonly': [('state', 'not in', ['reject'])],'required': [('state', 'in', ['reject'])]}"/>
+                                     <label for="refuse_reason" attrs="{'invisible': [('state', '!=', 'reject')]}"/><br/>
+                                    <field name="refuse_reason" attrs="{'invisible': [('state', '!=', 'reject')]}" readonly="1"/>
 
                                 </div>
                              </div>
@@ -115,6 +115,8 @@
                                     <group>
                                         <field name="settlement_type_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                         <field name="resign_date" string="Resign Date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="last_date" string="Last Working Date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
                                         <field name="contract_type_id" readonly="1" force_save="1"/>
                                         <field name="reason"  placeholder="Reason" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                     </group>
@@ -163,7 +165,7 @@
                <page string="Gratuity">
                 <button name="generate_gratuity_value" type="object" string="Get Gratuity" attrs="{'invisible':[('state','in',('progress','done'))]}" class="oe_highlight"/>
 
-               <field name="gratuity_line_id" attrs="{'readonly': [('state', '!=', 'draft')]}">
+               <field name="gratuity_line_id" readonly="1">
                     <tree editable="top" create="false" delete="false">
 
                         <field name="slab"/>
@@ -224,7 +226,7 @@
                                       <group>
                                          <field name="last_vacation" invisible="1"/>
                                         <field name="available_days" readonly="1"/>
-                                        <field name="total_salary" readonly="1" string="Net Salary"/>
+<!--                                        <field name="total_salary" readonly="1" string="Net Salary"/>-->
 
                                         <field name="fs_gross_per_day" readonly="1"/>
 
@@ -314,7 +316,7 @@
                     <group string="Payment Information">
                         <group>
                             <field name="date" invisible="1"/>
-                           <field name="journal_id" domain="[('type', '=', 'bank')]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                           <field name="journal_id" domain="[('type', '=', 'bank')]" attrs="{'required':[('state','!=','draft')]}"/>
                             <field name="company_id" groups="base.group_multi_company" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
                             <field name="currency_id"  groups="base.group_multi_currency" invisible="1"/>
@@ -377,6 +379,32 @@
   </record>
 <menuitem id="final_settlement_view" name="Settlement" action="action_final_settlement_view" parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root" sequence="37"/>
 
+
+
+    <record model="ir.ui.view" id="hr_employee_resign_form_view">
+        <field name="name">hr.employee.form.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <field name="job_id" position="after">
+                <field name="resign_date" invisible="1"/>
+                <field name="resigned" invisible="1"/>
+                <field name="fired" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+        <record model="ir.ui.view" id="hr_employee_resigned_filter">
+        <field name="name">hr.employee.form.filter</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <field name="job_id" position="after">
+                <filter string="Resigned Employees" name="resigned" domain="[('resigned', '=', True)]"/><!--domain="['&amp;',('resigned', '=', True),('active', '=', False)]-->
+                <filter string="Fired Employees" name="fired" domain="[('fired', '=', True)]"/>
+            </field>
+        </field>
+    </record>
 
  </data>
 </odoo>

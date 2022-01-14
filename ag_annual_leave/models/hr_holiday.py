@@ -21,30 +21,31 @@ class HrHolidays(models.Model):
 
 
 
-    def name_get(self):
-        res = []
-
-        for leave in self:
-            if leave.annual_cron_date:
-                current_date = fields.Date.from_string(leave.annual_cron_date)
-            else:
-                current_date = fields.Date.from_string(leave.create_date)
-            if current_date:
-                current_month = current_date.strftime("%B")
-                current_year = current_date.year
-
-                if leave.holiday_status_id.code == 'ANNUAL':
-                    #                 name = leave.holiday_status_id.name + ' Allocation - '+ leave.employee_id.name + ' - ' + current_month + ' ' + str(current_year)
-                    name = leave.holiday_status_id.name + ' Allocation - ' + current_month + ' ' + str(current_year)
-                    res.append((leave.id, name))
-                else:
-                    res.append((leave.id, _("%s on %s : %.2f day(s)") % (
-                    leave.employee_id.name or leave.category_id.name, leave.holiday_status_id.name,
-                    leave.number_of_days)))
-        return res
+    # def name_get(self):
+    #     res = []
+    #
+    #     for leave in self:
+    #         if leave.annual_cron_date:
+    #             current_date = fields.Date.from_string(leave.annual_cron_date)
+    #         else:
+    #             current_date = fields.Date.from_string(leave.create_date)
+    #         if current_date:
+    #             current_month = current_date.strftime("%B")
+    #             current_year = current_date.year
+    #
+    #             if leave.holiday_status_id.work_entry_type_id.code == 'LEAVE120' and leave.holiday_status_id.name:
+    #                 #                 name = leave.holiday_status_id.name + ' Allocation - '+ leave.employee_id.name + ' - ' + current_month + ' ' + str(current_year)
+    #                 name = leave.holiday_status_id.name + ' Allocation - ' + current_month + ' ' + str(current_year)
+    #                 res.append((leave.id, name))
+    #             else:
+    #                 res.append((leave.id, _("%s on %s : %.2f day(s)") % (
+    #                 leave.employee_id.name or leave.category_id.name, leave.holiday_status_id.name,
+    #                 leave.number_of_days)))
+    #     return res
 
     @api.model
     def _create_allocation_request_by_cron(self, employees, leave_type, leave_number):
+
         current_date = fields.Date.from_string(fields.Date.today())
 
         current_month = current_date.strftime("%B")
@@ -61,15 +62,16 @@ class HrHolidays(models.Model):
             print('---emp----',emp)
             print('---entered for loop---')
             contracts = self.env['hr.contract'].browse()
-
-            worked_days_line_ids = self.env['hr.payslip'].get_worked_day_lines(contracts, date_from, date_to)
-            print('----worked_dys_line----',worked_days_line_ids)
+            print('----cont----',contracts)
             was_on_full_month_leave = False
-            for line in worked_days_line_ids:
-                if line['code'] == 'WORK100':
-                    if line['number_of_days'] == 0.0:
-                        was_on_full_month_leave = True
-                        break
+
+            # worked_days_line_ids = self.env['hr.payslip']._get_worked_day_lines()
+            #
+            # for line in worked_days_line_ids:
+            #     if line['work_entry_type_id.code'] == 'WORK100':
+            #         if line['number_of_days'] == 0.0:
+            #             was_on_full_month_leave = True
+            #             break
 
             if not was_on_full_month_leave:
                 print('----entered if cond---')
@@ -86,9 +88,13 @@ class HrHolidays(models.Model):
 
                 print('-----leave values-----',vals)
                 holiday = self.env['hr.leave.allocation'].create(vals)
-                holiday.action_approve()
-                if holiday.state == 'validate1':
+                #holiday.action_confirm()
+                if holiday.state == 'confirm':
                     holiday.action_validate()
+
+           # print('----worked_dys_line----',worked_days_line_ids)
+
+
 
     @api.model
     def cron_legal_leave_allocation_request(self):
@@ -96,7 +102,7 @@ class HrHolidays(models.Model):
         employees = self.env['hr.employee'].search([])
         print('-------employeee list----',employees)
 
-        leave_type = self.env['hr.leave.type'].search([('code', 'ilike', 'ANNUAL')])
+        leave_type = self.env['hr.leave.type'].search([('work_entry_type_id.code', 'ilike', 'LEAVE120')])
         leave_number = 2.5
         self._create_allocation_request_by_cron(employees, leave_type, leave_number)
 

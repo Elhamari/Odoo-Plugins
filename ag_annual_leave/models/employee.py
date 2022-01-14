@@ -40,12 +40,14 @@ class HrEmployee(models.Model):
 
     def action_view_earned_leaves(self):
         for rec in self:
-            leave_type = self.env['hr.leave.type'].search([('code', 'ilike', 'ANNUAL')])
+            leave_type = self.env['hr.leave.type'].search([('work_entry_type_id.code', 'ilike', 'LEAVE120')])
+            print('---leavetype----',leave_type)
             holidays_id = self.env['hr.leave.report'].search([
                 ('holiday_status_id', 'in', leave_type.ids),
                 ('employee_id', '=', rec.id),
                 ('state','=','validate')
             ])
+            print('-----holiday_id----',holidays_id)
             action = self.env.ref('ag_annual_leave.action_hr_employee_holiday_request')
             result = action.read()[0]
             result['domain'] = [('id', 'in', holidays_id.ids)]

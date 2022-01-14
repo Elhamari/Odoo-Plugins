@@ -5,13 +5,13 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='allowances']" position="replace">
+            <!--<xpath expr="//group[@name='allowances']" position="replace">
             </xpath>
-
+-->
             <xpath expr="//page[@name='information']/group/group[@name='yearly_advantages']" position="replace">
             </xpath>
 
-            <xpath expr="//page[@name='information']/group/group[@name='salary_and_advantages']" position="after">
+            <xpath expr="//page[@name='information']/group/group[@name='salary']" position="after">
                 <field name="hr_allowance_line_ids" nolabel="1" colspan="2" >
                     <tree editable="top">
 
@@ -28,11 +28,53 @@
                     <field name="amount_in_word" invisible="1"/>
                 </group>
             </xpath>
-           <!-- <xpath expr="//group[@name='allowances']" position="after">
 
-            </xpath>-->
         </field>
      </record>
+
+
+      <record id="hr_contract_view_form_inheited_extend_ent" model="ir.ui.view">
+        <field name="name">hr.contract.view.inherited.extended</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="l10n_ae_hr_payroll.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group[@name='end_of_service_provision']" position="replace">
+
+            </xpath>
+            <xpath expr="//label[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='l10n_ae_housing_allowance']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='l10n_ae_housing_allowance']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//label[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='l10n_ae_transportation_allowance']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='l10n_ae_transportation_allowance']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//label[3]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='l10n_ae_other_allowances']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//field[@name='l10n_ae_other_allowances']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+
+
+
+        </field>
+      </record>
 
 
   <!--  Multi Payslip Wizard  -->
