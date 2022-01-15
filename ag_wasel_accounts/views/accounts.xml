@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- analytic account application part -->
+            <record model="ir.ui.view" id="account_analytic_account_customized_form">
+                <field name="name">account.analytic.account.customized.form</field>
+                <field name="model">account.analytic.account</field>
+                <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+                <field name="arch" type="xml">
+                    <!-- <xpath expr="//field[@name='code']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath> -->
+                    <label for="name" position="before"> 
+                        <label for="analytic_code" string="Code" class="oe_edit_only"/>
+                        <h1>
+                            <field name="analytic_code" class="oe_inline" placeholder="e.g. 01011"/>
+                        </h1>
+                    </label>
+
+                </field>
+            </record>
+        <!-- analytic account  application part -->
+
+        <!-- analytic Tags application part -->
+            <record model="ir.ui.view" id="account_analytic_tag_customized_form">
+                <field name="name">account.analytic.tag.customized.form</field>
+                <field name="model">account.analytic.tag</field>
+                <field name="inherit_id" ref="analytic.account_analytic_tag_form_view"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='analytic_distribution_ids']/tree//field[@name='percentage']" position="attributes">
+                        <attribute name="sum" >Percentages</attribute>
+                    </xpath>
+                     <!-- <xpath expr="//field[@name='company_id']" position="after">
+                        <field name="total_percent" />
+                    </xpath> -->
+
+
+                </field>
+            </record>
+        <!-- analytic Tags  application part -->
+
+        <!-- Budget Customization part -->
+            <record model="ir.ui.view" id="crossovered_budget_customized_form">
+                <field name="name">crossovered.budget.customized.form</field>
+                <field name="model">crossovered.budget</field>
+                <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='crossovered_budget_line']/tree//field[@name='theoritical_amount']" position="attributes">
+                        <attribute name="invisible" >1</attribute>
+                    </xpath>
+
+                </field>
+            </record>
+        <!-- Budget Customization part -->
+
+        <!-- Asset Customization part -->
+            <record id="account_asset_cuss_form_build" model="ir.ui.view">
+                <field name="name">account.asset.cuss.form.build</field>
+                <field name="model">account.asset</field>
+                <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//div[hasclass('oe_title')]" position="inside">
+                        <label for="asset_code" />
+                        <h1>
+                            <field name="asset_code" attrs="{'readonly': [('state', 'in', ('close'))]}"/>
+                        </h1>
+                    </xpath>
+                    
+                </field>
+            </record>
+        <!-- Asset Customization part -->
+
+
+        <!-- Account move Customization part -->
+            <record id="account_move_cuss_form_build" model="ir.ui.view">
+                <field name="name">account.move.cuss.form.build</field>
+                <field name="model">account.move</field>
+                <field name="inherit_id" ref="account.view_move_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='invoice_date']" position="attributes">
+                        <attribute name="attrs" >{'readonly':[('move_type', 'in', ('in_invoice'))],'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}</attribute>
+                    </xpath>
+                    <xpath expr="//sheet//field[@name='date']" position="attributes">
+                        <attribute name="attrs" >{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))],'readonly': ['|',('move_type', 'in', ('in_invoice')),('state', '!=', 'draft')],}</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='invoice_origin']" position="replace">
+                    </xpath>
+                    <xpath expr="//field[@name='partner_id']" position="after">
+                        <field name="invoice_origin" string="Source Document" force_save="1" readonly="1"/>
+                    </xpath>
+                    
+                </field>
+            </record>
+        <!-- Account move Customization part -->
+
+    </data>
+</odoo>
