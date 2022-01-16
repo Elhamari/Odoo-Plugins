@@ -30,9 +30,9 @@
                     <xpath expr="//field[@name='analytic_distribution_ids']/tree//field[@name='percentage']" position="attributes">
                         <attribute name="sum" >Percentages</attribute>
                     </xpath>
-                     <!-- <xpath expr="//field[@name='company_id']" position="after">
-                        <field name="total_percent" />
-                    </xpath> -->
+                     <xpath expr="//field[@name='company_id']" position="after">
+                        <field name="total_percent" invisible="1"/>
+                    </xpath>
 
 
                 </field>

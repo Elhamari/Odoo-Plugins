@@ -17,38 +17,26 @@ class AnalyticAccount(models.Model):
 class AnalyticAccountTag(models.Model):
     _inherit = 'account.analytic.tag'
 
-    percentage = fields.Float(string='Percentage', required=True, default=0.0)
+
+    total_percent = fields.Float('Total Percentage',compute='_onchange_analytic_tag',store=True,)
+
+    @api.depends('analytic_distribution_ids')
+    def _onchange_analytic_tag(self):
+        for rec in self:
+            if rec.analytic_distribution_ids:
+                if sum(rec.analytic_distribution_ids.mapped('percentage')) > 100.00:
+                    
+                    raise UserError('The total of the percentage values should be 100 \n pls make sure the total is equal 100%')
+                else:
+                    rec.total_percent = sum(rec.analytic_distribution_ids.mapped('percentage'))
+            else:
+                rec.total_percent = 0.0
 
 class AnalyticAccountTag(models.Model):
     _inherit = 'account.analytic.distribution'
 
     percentage = fields.Float(string='Percentage', required=True, default=0.0)
 
-    @api.onchange('analytic_distribution_ids','analytic_distribution_ids.percentage')
-    def _onchange_analytic_tag(self):
-        
-        for rec in self:
-            if rec.analytic_distribution_ids:
-                if sum(rec.analytic_distribution_ids.mapped('percentage')) <= 100.00:
-                    
-                    raise UserError('The total of the percentage values should be 100 \n pls make sure the total is equal 100%')
-
-    # @api.model
-    # def create(self,vals):
-        
-    #     if 'analytic_distribution_ids' in vals:
-    #         # raise UserError(sum(vals.get('analytic_distribution_ids')[0].mapped('percentage')))
-    #         raise UserError(vals.get('analytic_distribution_ids'))
-        
-    #     res = super(AnalyticAccountTag,self).create(vals)
-    #     for rec in self:
-    #         # raise UserError('Mohon maaf tidak bisa ..')
-    #         if rec.analytic_distribution_ids:
-    #             if sum(rec.analytic_distribution_ids.mapped('percentage')) == 100.00:
-    #                 continue
-    #             else:
-    #                 raise UserError('The total of the percentage values should be 100 \n pls make sure the total is equal 100%')
-    #     return res
 
 # ######################################################
 # Budgets Changes
