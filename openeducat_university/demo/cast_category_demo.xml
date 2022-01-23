@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="cast_category_demo1" model="op.cast.category">
+            <field name="name">General</field>
+        </record>
+
+        <record id="cast_category_demo2" model="op.cast.category">
+            <field name="name">SC</field>
+        </record>
+        <record id="cast_category_demo3" model="op.cast.category">
+            <field name="name">ST</field>
+        </record>
+        <record id="cast_category_demo4" model="op.cast.category">
+            <field name="name">OBC</field>
+        </record>
+        <record id="cast_category_demo5" model="op.cast.category">
+            <field name="name">Other</field>
+        </record>
+        <record id="cast_category_demo6" model="op.cast.category">
+            <field name="name">NRI</field>
+        </record>
+    </data>
+</odoo>

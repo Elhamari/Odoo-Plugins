@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mother_tongue_demo1" model="mother.tongue.lang">
+            <field name="name">Marathi</field>
+        </record>
+
+        <record id="mother_tongue_demo2" model="mother.tongue.lang">
+            <field name="name">Tamil</field>
+        </record>
+        <record id="mother_tongue_demo3" model="mother.tongue.lang">
+            <field name="name">Telgu</field>
+        </record>
+        <record id="mother_tongue_demo4" model="mother.tongue.lang">
+            <field name="name">Punjabi</field>
+        </record>
+        <record id="mother_tongue_demo5" model="mother.tongue.lang">
+            <field name="name">Urdu</field>
+        </record>
+        <record id="mother_tongue_demo6" model="mother.tongue.lang">
+            <field name="name">English</field>
+        </record>
+    </data>
+</odoo>

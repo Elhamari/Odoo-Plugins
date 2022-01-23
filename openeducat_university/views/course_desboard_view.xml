@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="university_course_dashboard_kanban" model="ir.actions.act_window">
+            <field name="name">Course Dashboard</field>
+            <field name="res_model">op.course</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="openeducat_core.view_op_course_form"/>
+            <field name="domain">[('department_id','=',context.get('active_id', False))]</field>
+            <field name="help" type="html">
+                <p>This is the Course Dashboard.</p>
+            </field>
+        </record>
+        <record id="university_course_dashboard_action" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="openeducat_core_enterprise.openeducat_course_dashboard_kanban_view"/>
+            <field name="act_window_id" ref="university_course_dashboard_kanban"/>
+        </record>
+
+        <record id="act_university_batch_dashboard_kanban" model="ir.actions.act_window">
+            <field name="name">Batch Dashboard</field>
+            <field name="res_model">op.batch</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="openeducat_core.view_op_batch_form"/>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p>This is the Batch Dashboard.</p>
+            </field>
+        </record>
+
+        <record id="university_batch_dashboard_action" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="openeducat_core_enterprise.openeducat_batch_dashboard_kanban_view"/>
+            <field name="act_window_id" ref="act_university_batch_dashboard_kanban"/>
+        </record>
+    </data>
+</odoo>
+

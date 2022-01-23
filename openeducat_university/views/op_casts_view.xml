@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_op_casts_form" model="ir.ui.view">
+            <field name="name">op.casts.form</field>
+            <field name="model">op.casts</field>
+            <field name="arch" type="xml">
+                <form string="Cast Category">
+                    <sheet>
+                        <group colspan="3" col="3">
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_op_casts_tree" model="ir.ui.view">
+            <field name="name">op.casts.tree</field>
+            <field name="model">op.casts</field>
+            <field name="arch" type="xml">
+                <tree string="Cast Category">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_open_op_casts_view">
+            <field name="name">Cast Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">op.casts</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="act_open_op_casts_view_form">
+            <field name="act_window_id" ref="act_open_op_casts_view"/>
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_op_casts_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="act_open_op_casts_view_tree">
+            <field name="act_window_id" ref="act_open_op_casts_view"/>
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_op_casts_tree"/>
+        </record>
+    </data>
+</odoo>

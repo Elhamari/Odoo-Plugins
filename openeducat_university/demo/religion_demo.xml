@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="religion_demo1" model="op.religion">
+            <field name="name">Hindu</field>
+        </record>
+
+        <record id="religion_demo2" model="op.religion">
+            <field name="name">Muslim</field>
+        </record>
+
+        <record id="religion_demo3" model="op.religion">
+            <field name="name">Christian</field>
+        </record>
+        <record id="religion_demo4" model="op.religion">
+            <field name="name">Jainism</field>
+        </record>
+        <record id="religion_demo5" model="op.religion">
+            <field name="name">Parsi</field>
+        </record>
+        <record id="religion_demo6" model="op.religion">
+            <field name="name">Buddhist</field>
+        </record>
+        <record id="religion_demo7" model="op.religion">
+            <field name="name">Zoroastrianism</field>
+        </record>
+
+        <record id="religion_demo8" model="op.religion">
+            <field name="name">Other</field>
+        </record>
+
+    </data>
+</odoo>

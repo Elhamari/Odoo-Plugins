@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_op_course_normal_category,access_op_course_normal_category,model_op_course_normal_category,base.group_user,1,1,1,0
+access_op_cast_category,access_op_cast_category,model_op_cast_category,base.group_user,1,1,1,0
+access_mother_tongue_lang,access_mother_tongue_lang,model_mother_tongue_lang,base.group_user,1,1,1,0
+access_op_religion,access_op_religion,model_op_religion,base.group_user,1,1,1,0
+access_op_casts,access_op_casts,model_op_casts,base.group_user,1,1,1,0

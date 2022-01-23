@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_op_academic_root" name="Academic"
+                  sequence="30"
+                  web_icon="openeducat_university,static/description/university.png"/>
+
+        <menuitem id="menu_op_university_submenu" name="University"
+                  sequence="5"
+                  groups="openeducat_core.group_op_back_office,openeducat_core.group_op_back_office_admin"
+                  parent="menu_op_academic_root"
+                  action="action_res_company_university_dashboard"/>
+
+        <menuitem id="menu_op_configuration_submenu" name="Configuration"
+                  sequence="10"
+                  groups="openeducat_core.group_op_back_office,openeducat_core.group_op_back_office_admin"
+                  parent="menu_op_academic_root"/>
+
+        <menuitem id="menu_course_category_submenu" name="Course Category"
+                  sequence="1"
+                  parent="menu_op_configuration_submenu"
+                  action="act_open_course_normal_category_view"/>
+
+        <menuitem id="menu_cast_category_submenu" name="Cast Category"
+                  sequence="5"
+                  parent="menu_op_configuration_submenu"
+                  action="act_open_op_cast_category_view"/>
+
+        <menuitem id="menu__op_casts_submenu" name="Casts"
+                  sequence="10"
+                  parent="menu_op_configuration_submenu"
+                  action="act_open_op_casts_view"/>
+
+        <menuitem id="menu_cast_tongue_submenu" name="Mother Tongue"
+                  sequence="15"
+                  parent="menu_op_configuration_submenu"
+                  action="action_mother_tongue_management"/>
+
+        <menuitem id="menu_religion_submenu" name="Religion"
+                  sequence="20"
+                  parent="menu_op_configuration_submenu"
+                  action="act_open_op_religion_view"/>
+    </data>
+</odoo>
+
+
+
+
+
+
+
+

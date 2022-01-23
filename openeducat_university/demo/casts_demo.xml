@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="op_casts_demo1" model="op.casts">
+            <field name="name">Kumbhi</field>
+        </record>
+
+        <record id="op_casts_demo2" model="op.casts">
+            <field name="name">Wadi</field>
+        </record>
+        <record id="op_casts_demo3" model="op.casts">
+            <field name="name">Baraman</field>
+        </record>
+        <record id="op_casts_demo4" model="op.casts">
+            <field name="name">Kunbi</field>
+        </record>
+        <record id="op_casts_demo5" model="op.casts">
+            <field name="name">Shimpi</field>
+        </record>
+        <record id="op_casts_demo6" model="op.casts">
+            <field name="name">Mahar</field>
+        </record>
+    </data>
+</odoo>

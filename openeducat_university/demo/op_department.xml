@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="op_department_demo_1" model="op.department">
+            <field name="name">School Of Management</field>
+            <field name="code">SOM</field>
+            <field name="company_id" ref="openeducat_university.main_company_university_child"/>
+            <field name="course">Program</field>
+
+        </record>
+        <record id="op_department_demo_2" model="op.department">
+            <field name="name">School Of Engineering</field>
+            <field name="code">SOE</field>
+            <field name="company_id" ref="openeducat_university.main_company_university_child"/>
+            <field name="course">Program</field>
+        </record>
+        <record id="op_department_demo_3" model="op.department">
+            <field name="name">School Of Science</field>
+            <field name="code">SOS</field>
+            <field name="company_id" ref="openeducat_university.main_company_university_child"/>
+            <field name="course">Program</field>
+        </record>
+
+        <record id="op_department_demo_4" model="op.department">
+            <field name="name">School Of Management</field>
+            <field name="code">SOM1</field>
+            <field name="company_id" ref="openeducat_university.main_company_university_child_2"/>
+            <field name="course">Program</field>
+        </record>
+        <record id="op_department_demo_5" model="op.department">
+            <field name="name">School Of Engineering</field>
+            <field name="code">SOE1</field>
+            <field name="company_id" ref="openeducat_university.main_company_university_child_2"/>
+            <field name="course">Program</field>
+        </record>
+        <record id="op_department_demo_6" model="op.department">
+            <field name="name">School Of Science</field>
+            <field name="code">SOS1</field>
+            <field name="company_id" ref="openeducat_university.main_company_university_child_2"/>
+            <field name="course">Program</field>
+        </record>
+    </data>
+</odoo>
+
+
+     

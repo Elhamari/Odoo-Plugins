@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="main_partner_university_child" model="res.partner">
+            <field name="name">Child Campus 1</field>
+            <field name="street">Park Blvd, Suite</field>
+            <field name="city">Nr. Mall</field>
+            <field name="zip">941134</field>
+            <field name='country_id' ref='base.us'/>
+            <field name='state_id' ref='base.state_us_6'/>
+            <field name="phone">+1 (650) 69111-3277</field>
+            <field name="website">www.bhubaneswar.org</field>
+
+        </record>
+        <record id="main_company_university_child" model="res.company">
+            <field name="name">Child Campus 1</field>
+            <field name="partner_id" ref="main_partner_university_child"/>
+            <field name="parent_id" ref="base.main_company"/>
+            <field name="label_company">Campus</field>
+            <field name="batch">Covert</field>
+            <field name="course">Course</field>
+            <field name="label_department">Academic Branch</field>
+            <field name="trainee">Trainee</field>
+        </record>
+        <record id="main_partner_university_child_2" model="res.partner">
+            <field name="name">Child Campus 2</field>
+            <field name="street">Main Market, Suite</field>
+            <field name="city">Nr. Market</field>
+            <field name="zip">9411324</field>
+            <field name='country_id' ref='base.us'/>
+            <field name='state_id' ref='base.state_us_6'/>
+            <field name="phone">+1 (650) 69115-3277</field>
+            <field name="website">www.paralakhemundi.org</field>
+        </record>
+        <record id="main_company_university_child_2" model="res.company">
+            <field name="name">Child Campus 2</field>
+            <field name="partner_id" ref="main_partner_university_child_2"/>
+            <field name="parent_id" ref="base.main_company"/>
+            <field name="label_company">Campus</field>
+            <field name="batch">Batch</field>
+            <field name="course">Course</field>
+            <field name="label_department">Academic Branch</field>
+            <field name="trainee">Trainee</field>
+        </record>
+    </data>
+</odoo>
+
+
