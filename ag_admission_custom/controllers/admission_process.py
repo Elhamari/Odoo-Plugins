@@ -394,20 +394,67 @@ class SubjectRegistrationPortal(CustomerPortal):
         # compulsory_subject +=  kw['elective_subject_ids']
         # raise UserError('Mohon maaf tidak bisa ..')
         credit_course = request.env['op.subject'].sudo().search([('subject_type', '=', 'compulsory'),('course_id', '=', int(kw.get('course_id')))])
-        # for cr in credit_course:
-        #     crd_lst.append(cr)
-        return credit_course
+        for cr in credit_course:
+            crd_lst.append('<option value="%s">%s</option>'%(cr.id,cr.name))
+        
+        return crd_lst
 
     @http.route('/get/subject/subcredit', type='json', website=True, auth='user')
     def get_subject_subcredit_total(self, **kw):
         crd_lst = []
         compulsory_subject =   kw['compulsory_subject_ids']
-        for comp in compulsory_subject:
-            credit_course = request.env['op.subject'].sudo().search([('id', '=', comp)])
-            crd_lst.append(credit_course.sub_credit)
+        credit_course = request.env['op.subject'].sudo().search([('id', 'in', compulsory_subject)])
+        # crd_lst.append()
         # compulsory_subject +=  kw['elective_subject_ids']
         # raise UserError('Mohon maaf tidak bisa ..')
         
-        # for cr in credit_course:
-        #     crd_lst.append(cr)
+        for cr in credit_course:
+            crd_lst.append(cr.sub_credit)
         return sum(crd_lst)
+
+
+    @http.route('/get/subject/total', type='json', website=True, auth='user')
+    def get_subject_credit_total(self, **kw):
+        crd_lst = []
+        compulsory_subject = kw['compulsory_subject_ids']
+        compulsory_subject += kw['elective_subject_ids']
+
+        credit_course = request.env['op.subject'].sudo().search([('id', 'in', compulsory_subject)])
+
+        for cr in credit_course:
+            crd_lst.append(cr.sub_credit)
+        # if credit_course.all_academic == 'general':
+        #     for cre in credit_course.subject_credit:
+        #         if cre.subject_id.id in compulsory_subject:
+        #             crd_lst.append(cre.credit)
+        # else:
+        #     for cre in credit_course.sem_credit_line_id:
+        #         for sub_cre in cre.subject_credit:
+        #             if sub_cre.subject_id.id in compulsory_subject:
+        #                 crd_lst.append(sub_cre.credit)
+
+        return sum(crd_lst)
+    
+    @http.route('/get/subject/getacadmic', type='json', website=True, auth='user')
+    def get_subject_getacadmic_total(self, **kw):
+        crd_lst = []
+        # compulsory_subject = kw['compulsory_subject_ids']
+        # compulsory_subject += kw['elective_subject_ids']
+
+        credit_course = request.env['op.course'].sudo().search([('id', '=', int(kw.get('course_id')))])
+        if credit_course.acadmic_year_id:
+            crd_lst.append(credit_course.acadmic_year_id.id)
+
+        return crd_lst
+
+    @http.route('/get/subject/getterm', type='json', website=True, auth='user')
+    def get_subject_getterm_total(self, **kw):
+        crd_lst = []
+        # compulsory_subject = kw['compulsory_subject_ids']
+        # compulsory_subject += kw['elective_subject_ids']
+
+        credit_course = request.env['op.course'].sudo().search([('id', '=', int(kw.get('course_id')))])
+        if credit_course.term_id:
+            crd_lst.append(credit_course.term_id.id)
+
+        return crd_lst

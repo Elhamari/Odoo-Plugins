@@ -573,7 +573,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                                <div class="form-group col-12">
                                                     <div class="row s_col_no_resize s_col_no_bgcolor">
                                                         <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="birthday_cert">
                                                             <span class="s_website_form_label_content">Birthday Cert.</span>
@@ -584,7 +584,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                                <div class="form-group col-12">
                                                     <div class="row s_col_no_resize s_col_no_bgcolor">
                                                         <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="pledge">
                                                             <span class="s_website_form_label_content">Acknowledgemt And Pledge</span>

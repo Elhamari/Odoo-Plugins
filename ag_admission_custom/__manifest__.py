@@ -40,7 +40,7 @@
     # """,
     'author': 'APPSGATE FZC LLC',
     'company': 'APPSGATE FZC LLC',
-    'depends': ['base','openeducat_admission','openeducat_online_admission','openeducat_admission_enterprise','openeducat_core_enterprise','openeducat_cbcs'],
+    'depends': ['base','openeducat_cbcs','openeducat_admission','openeducat_online_admission','openeducat_admission_enterprise','openeducat_core_enterprise'],
     'data': [
 
 
@@ -71,7 +71,7 @@
         ],
         'web.assets_frontend': [
             # 'account/static/src/js/account_portal_sidebar.js',
-            'ag_admission_custom/static/src/js/map.js',
+            # 'ag_admission_custom/static/src/js/map.js',
             '/ag_admission_custom/static/src/js/selectionn.js',
         ],
         'web.assets_tests': [

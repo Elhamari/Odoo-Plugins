@@ -10,6 +10,8 @@
                     <xpath expr="//field[@name='min_unit_load']" position="after">
                         <field name="min_credit" />
                         <field name="max_credit" />
+                        <field name="acadmic_year_id" />
+                        <field name="term_id" />
                     </xpath>
                     <xpath expr="//field[@name='min_unit_load']" position="attributes">
                         <attribute name="invisible">1</attribute>

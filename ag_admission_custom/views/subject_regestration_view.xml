@@ -9,7 +9,7 @@
         </xpath>
         <xpath expr="//div[hasclass('js_get_data')]//div//form//div[1]//div[2]//div[2]" position="replace">
                 <div class="col-md-6">
-                    <input type="number" name="min_credit" t-attf-class="form-control"/>
+                    <input type="number" readonly="readonly" name="min_credit" t-attf-class="form-control"/>
                 </div>
         </xpath>
         <xpath expr="//div[hasclass('js_get_data')]//div//form//div[1]//div[2]//div[3]" position="replace">
@@ -19,7 +19,7 @@
         </xpath>
         <xpath expr="//div[hasclass('js_get_data')]//div//form//div[1]//div[2]//div[4]" position="replace">
                 <div class="col-md-6 mt8">
-                    <input type="number" name="max_credit" t-attf-class="form-control"/>
+                    <input type="number" readonly="readonly" name="max_credit" t-attf-class="form-control"/>
                 </div>
         </xpath>
         <xpath expr="//div[hasclass('js_get_data')]//div//form/div[4]" position="replace">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-md-10" style="padding-left: 5px;">
                     <select class="form-control js-example-basic-multiple"
-                            name="compulsory_subject_ids" multiple="True" required="1">
+                            name="compulsory_subject_ids" id="comp_list" multiple="True" required="1">
                         <t t-foreach="compulsory_registration_ids" t-as="student_details">
                             <option t-att-value="student_details.id">
                                 <t t-esc="student_details.name"/>
