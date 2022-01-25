@@ -8,7 +8,7 @@ class AdmissionCustom(models.Model):
 
     application_num = fields.Char('Appliction Number')
     nationality = fields.Many2one('res.country',string="Nationality")
-    place_of_birth = fields.Many2one('res.country',string="place of birth")
+    place_of_birth = fields.Many2one('res.country',string="Place Of Birth")
     maturity_status = fields.Selection([
         ('single', 'Single'),
         ('married', 'Married'),
@@ -44,7 +44,7 @@ class AdmissionCustom(models.Model):
         ('Arabian Country', 'Arabian Country'),
         ('Islamic Country', 'Islamic Country'),
         ('Other', 'Other'),
-    ], string='Issue State')
+    ], string='School System')
     institute_type = fields.Many2one('institute.type',string="Institute Type")
     certificate_origin = fields.Char('Certificate Origin')
     sec_issued_date = fields.Date('Issue Date')

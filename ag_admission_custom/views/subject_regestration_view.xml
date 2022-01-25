@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="course_registration_form_inherit_credit2"
+              inherit_id="openeducat_core_enterprise.openeducat_create_subject_registration">
+        <xpath expr="//div[hasclass('js_get_data')]//div//form//div[1]//div[2]//div[1]" position="replace">
+                <div class="col-md-6 mt8">
+                    <lable>Minimum Credit Hours:</lable>
+                </div>
+        </xpath>
+        <xpath expr="//div[hasclass('js_get_data')]//div//form//div[1]//div[2]//div[2]" position="replace">
+                <div class="col-md-6">
+                    <input type="number" name="min_credit" t-attf-class="form-control"/>
+                </div>
+        </xpath>
+        <xpath expr="//div[hasclass('js_get_data')]//div//form//div[1]//div[2]//div[3]" position="replace">
+                <div class="col-md-6 mt16">
+                    <lable>Maximum Credit Hours:</lable>
+                </div>
+        </xpath>
+        <xpath expr="//div[hasclass('js_get_data')]//div//form//div[1]//div[2]//div[4]" position="replace">
+                <div class="col-md-6 mt8">
+                    <input type="number" name="max_credit" t-attf-class="form-control"/>
+                </div>
+        </xpath>
+        <xpath expr="//div[hasclass('js_get_data')]//div//form/div[4]" position="replace">
+            <div t-if="user_id.sudo().is_student" class="row col-md-12">
+                <div class="col-md-2 mt8">
+                    <lable>Compulsory Subjects:</lable>
+                </div>
+                <div class="col-md-10" style="padding-left: 5px;">
+                    <select class="form-control js-example-basic-multiple"
+                            name="compulsory_subject_ids" multiple="True" required="1">
+                        <t t-foreach="compulsory_registration_ids" t-as="student_details">
+                            <option t-att-value="student_details.id">
+                                <t t-esc="student_details.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+            </div>
+        </xpath>
+        
+    </template>
+
+<!--    <template id="assets_frontend_js" name="Corousel Slider JS frontend assets"-->
+<!--              inherit_id="website.assets_frontend">-->
+<!--        <xpath expr="//script[@src='/openeducat_core_enterprise/static/src/js/custom.js']" position="replace">-->
+<!--            <script type="text/javascript"-->
+<!--                    src="/openeducat_cbcs/static/src/js/selection.js"/>-->
+<!--        </xpath>-->
+<!--    </template>-->
+</odoo>

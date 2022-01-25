@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Courses application part -->
+            <record model="ir.ui.view" id="op_course_customized_form">
+                <field name="name">op.course.customized.form</field>
+                <field name="model">op.course</field>
+                <field name="inherit_id" ref="openeducat_core.view_op_course_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='min_unit_load']" position="after">
+                        <field name="min_credit" />
+                        <field name="max_credit" />
+                    </xpath>
+                    <xpath expr="//field[@name='min_unit_load']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='max_unit_load']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+
+                </field>
+            </record>
+        <!-- Courses application part -->
+        <!-- Subject Registration application part -->
+            <record model="ir.ui.view" id="op_subject_registration_customized_form">
+                <field name="name">op.subject.registration.customized.form</field>
+                <field name="model">op.subject.registration</field>
+                <field name="inherit_id" ref="openeducat_core.view_subject_registration_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='min_unit_load']" position="after">
+                        <field name="min_credit" />
+                        <field name="max_credit" />
+                        <field name="term_id" />
+                    </xpath>
+                    <xpath expr="//field[@name='min_unit_load']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='max_unit_load']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+
+                </field>
+            </record>
+        <!-- Subject Registration application part -->
+    </data>
+</odoo>

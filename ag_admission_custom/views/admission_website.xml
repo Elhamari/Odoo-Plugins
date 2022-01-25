@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="openeducat_online_admission.admission_registration" name="Course Registration Form">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <section>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                    <br></br>
+                                    <script type="text/javascript" src="/ag_admission_custom/static/src/js/map.js"/>
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                                        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"/>
+                                        <style>
+                                        * {
+                                          box-sizing: border-box;
+                                        }
+                                        
+                                        body {
+                                          background-color: #f1f1f1;
+                                        }
+                                        
+                                        #regForm {
+                                          background-color: #ffffff;
+                                          margin: 100px auto;
+                                          font-family: Raleway;
+                                          padding: 40px;
+                                          width: 100%;
+                                          min-width: 500px;
+                                        }
+                                        
+                                        h1 {
+                                          text-align: center;  
+                                        }
+                                        
+                                        input {
+                                          padding: 10px;
+                                          width: 100%;
+                                          font-size: 17px;
+                                          font-family: Raleway;
+                                          border: 1px solid #aaaaaa;
+                                        }
+                                        
+                                        /* Mark input boxes that gets an error on validation: */
+                                        input.invalid {
+                                          background-color: #ffdddd;
+                                        }
+                                        
+                                        /* Hide all steps by default: */
+                                        .tab {
+                                          display: none;
+                                        }
+                                        
+                                        button {
+                                          background-color: #04AA6D;
+                                          color: #ffffff;
+                                          border: none;
+                                          padding: 10px 20px;
+                                          font-size: 17px;
+                                          font-family: Raleway;
+                                          cursor: pointer;
+                                        }
+                                        
+                                        button:hover {
+                                          opacity: 0.8;
+                                        }
+                                        
+                                        #prevBtn {
+                                          background-color: #bbbbbb;
+                                        }
+                                        
+                                        /* Make circles that indicate the steps of the form: */
+                                        .step {
+                                          height: 15px;
+                                          width: 15px;
+                                          margin: 0 2px;
+                                          background-color: #bbbbbb;
+                                          border: none;  
+                                          border-radius: 50%;
+                                          display: inline-block;
+                                          opacity: 0.5;
+                                        }
+                                        
+                                        .step.active {
+                                          opacity: 1;
+                                        }
+                                        
+                                        /* Mark the steps that are finished and valid: */
+                                        .step.finish {
+                                          background-color: #04AA6D;
+                                        }
+                                        fieldset {
+                                            background-color: transparent;
+                                          }
+                                          
+                                          legend {
+                                            background-color: transparent;
+                                            color: white;
+                                            <!-- padding: 5px 10px; -->
+                                          }
+                                          
+                                        </style>
+                                    <form role="form" data-toggle="validator" method="post" action="/shop/confirm_order"
+                                        id="regForm">
+                                        <div class="row js_get_data tab">
+                                            <div class="form-group col-md-12" style="padding-right: 45px;">
+                                                <input type="hidden" name="csrf_token"
+                                                       t-att-value="request.csrf_token()"/>
+                                                <label for="register_id">Course</label>
+                                                <select name="register_id" id="register_id" class="form-control"
+                                                        required="1">
+                                                    <option value="">Course</option>
+                                                    <t t-foreach="register_ids or []" t-as="register">
+                                                        <t t-if="register.id != register_id">
+                                                            <option t-att-value="register.id">
+                                                                <t t-esc="register.name"/>
+                                                            </option>
+                                                        </t>
+                                                        <t t-if="register.id == register_id">
+                                                            <option t-att-value="register.id" selected="1">
+                                                                <t t-esc="register.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                            <div t-if="student_id" class="form-group col-md-12">
+                                                <label class="radio-inline pr-3">
+                                                    <input type="radio" name="application" id="self_application"
+                                                           t-att-value="partner_id.id" required="1"
+                                                           style="margin-top:2px; margin-right:5px; vertical-align:text-top;">
+                                                        Self
+                                                    </input>
+                                                </label>
+                                                <label class="radio-inline pr-3">
+                                                    <input type="radio" name="application" id="self_application"
+                                                           value="0"
+                                                           required="1"
+                                                           style="margin-top:2px; margin-right:5px; vertical-align:text-top;">
+                                                        Other
+                                                    </input>
+                                                </label>
+                                            </div>
+                                            <div class="students" id="student_registration">
+                                                <div class="row col-md-12 "
+                                                     style="padding-right: 15px;">
+                                                    <div class="form-group col-md-4 " id="name">
+
+                                                        <label for="name">First Name</label>
+                                                        <input type="text" class="form-control"
+                                                               id="student_registration"
+                                                               name="first_name" placeholder="First Name"
+                                                               required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-4 " id="name">
+                                                        <label for="name">Middle Name</label>
+                                                        <input type="text" class="form-control"
+                                                               id="student_registration"
+                                                               name="middle_name" placeholder="Middle Name"/>
+                                                    </div>
+                                                    <div class="form-group col-md-4 " id="student_registration">
+                                                        <label for="name">Last Name</label>
+                                                        <input type="text" class="form-control" name='last_name'
+                                                               id="student_registration"
+                                                               placeholder="Last Name" required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="gender">Gender</label>
+                                                        <br/>
+                                                        <label class="radio-inline pr-3">
+                                                            <input type="radio" name="gender" id="male" value="m"
+                                                                   required="1"
+                                                                   style="margin-top:2px; margin-right:5px; vertical-align:text-top;">
+                                                                Male
+                                                            </input>
+                                                        </label>
+                                                        <label class="radio-inline pr-3">
+                                                            <input type="radio" name="gender" id="female" value="f"
+                                                                   required="1"
+                                                                   style="margin-top:2px; margin-right:5px; vertical-align:text-top;">
+                                                                Female
+                                                            </input>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group admission_form_date col-md-6"
+                                                         data-target-input="nearest"
+                                                         id="datetimepicker_birth">
+                                                        <label for="name">Date of Birth</label>
+                                                        <input type="text"
+                                                               data-target="#datetimepicker_birth"
+                                                               t-attf-class="form-control datetimepicker-input a fa-calendar:before"
+                                                               id="birthdate"
+                                                               name="birth_date" placeholder="MM/DD/YYYY"
+                                                               required="1"/>
+                                                        <div class="input-group-append position-absolute d-none"
+                                                             data-target="#datetimepicker_birth"
+                                                             data-toggle="datetimepicker">
+                                                            <div class="input-group-text text-primary border-0 bg-transparent p-0">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label" for="place_of_birth">Place Of Birth</label>
+                                                        <select name="place_of_birth" class="form-control" required="1">
+                                                            <option value="">Place Of Birth...</option>
+                                                            <t t-foreach="countries or []" t-as="country">
+                                                                <option t-att-value="country.id">
+                                                                    <t t-esc="country.name"/>
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label" for="nationality">Nationality</label>
+                                                        <select name="nationality" class="form-control" required="1">
+                                                            <option value="">Nationality...</option>
+                                                            <t t-foreach="countries or []" t-as="country">
+                                                                <option t-att-value="country.id">
+                                                                    <t t-esc="country.name"/>
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label" for="maturity_status">Maturity Status</label>
+                                                        <select name="maturity_status" class="form-control" required="1">
+                                                            <option value = "single">Single</option>
+                                                            <option value = "married">Married</option>
+                                                            <option value = "divorced">Divorced</option>
+                                                            <option value = "widow">Widow</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="email">Email</label>
+                                                        <input type="email" class="form-control" id="email" name="email"
+                                                               placeholder="Email" required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="phone">Mobile Number</label>
+                                                        <input type="text" class="form-control" id="phone"
+                                                               name="phone"
+                                                               placeholder="Mobile Number" required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="street">Street</label>
+                                                        <input type="text" name="street" class="form-control"
+                                                               placeholder="Street" required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label" for="city">City</label>
+                                                        <input type="text" name="city" class="form-control"
+                                                               placeholder="City"
+                                                               required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label label-optional" for="zip">
+                                                            <b>
+                                                                Zip / Postal Code
+                                                            </b>
+                                                        </label>
+                                                        <input type="text" name="zip" class="form-control"
+                                                               placeholder="Zip / Postal Code" required="1"/>
+                                                    </div>
+                                                    <div class="from-group col-md-6">
+                                                        <label class="control-label" for="country_id">Country</label>
+                                                        <select name="country_id" class="form-control" required="1">
+                                                            <option value="">Country...</option>
+                                                            <t t-foreach="countries or []" t-as="country">
+                                                                <option t-att-value="country.id">
+                                                                    <t t-esc="country.name"/>
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        <div class="tab">
+                                            <!-- <div style="overflow:auto;"> -->
+                                            <div class="row col-md-12 "
+                                                     style="padding-right: 15px;">
+                                                     
+                                                    <div class="form-group col-md-12">
+                                                    <h3>Passport Details:</h3></div>
+                                                    <div class="form-group col-md-6">
+                                                       <label for="passport_number">Passport Number</label>
+                                                        <input type="text" class="form-control"
+                                                               id="passport_number"
+                                                               name="passport_number" placeholder="Passport Number"
+                                                               required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label" for="passport_country_issue">Country Of Issued</label>
+                                                        <select name="passport_country_issue" class="form-control" required="1">
+                                                            <option value="">Country Of Issued...</option>
+                                                            <t t-foreach="countries or []" t-as="country">
+                                                                <option t-att-value="country.id">
+                                                                    <t t-esc="country.name"/>
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group admission_form_date col-md-6"
+                                                         data-target-input="nearest"
+                                                         id="datetimepicker_passport_issued_date">
+                                                        <label for="passport_issued_date">Issued Date</label>
+                                                        <input type="text"
+                                                               data-target="#datetimepicker_passport_issued_date"
+                                                               t-attf-class="form-control datetimepicker-input a fa-calendar:before"
+                                                               id="passport_issued_date"
+                                                               name="passport_issued_date" placeholder="MM/DD/YYYY"
+                                                               required="1"/>
+                                                        <div class="input-group-append position-absolute d-none"
+                                                             data-target="#datetimepicker_passport_issued_date"
+                                                             data-toggle="datetimepicker">
+                                                            <div class="input-group-text text-primary border-0 bg-transparent p-0">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group admission_form_date col-md-6"
+                                                         data-target-input="nearest"
+                                                         id="datetimepicker_passport_end_date">
+                                                        <label for="passport_end_date">End Date</label>
+                                                        <input type="text"
+                                                               data-target="#datetimepicker_passport_end_date"
+                                                               t-attf-class="form-control datetimepicker-input"
+                                                               id="passport_end_date"
+                                                               name="passport_end_date" placeholder="MM/DD/YYYY"
+                                                               required="1"/>
+                                                        <div class="input-group-append position-absolute d-none"
+                                                             data-target="#datetimepicker_passport_end_date"
+                                                             data-toggle="datetimepicker">
+                                                            <div class="input-group-text text-primary border-0 bg-transparent p-0">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                    <h3 >EID Details:</h3></div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="eid_number">EID Number</label>
+                                                        <input type="text" class="form-control"
+                                                               id="eid_number"
+                                                               name="eid_number" placeholder="EID Number"
+                                                               required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="uid">UID</label>
+                                                        <input type="text" class="form-control"
+                                                                id="uid"
+                                                                name="uid" placeholder="UID"
+                                                                required="1"/>
+                                                    </div>
+                                                    <div class="form-group admission_form_date col-md-6"
+                                                         data-target-input="nearest"
+                                                         id="datetimepicker_eid_end_date">
+                                                        <label for="eid_end_date">End Date</label>
+                                                        <input type="text"
+                                                                data-target="#datetimepicker_eid_end_date"
+                                                                t-attf-class="form-control datetimepicker-input a "
+                                                                id="eid_end_date"
+                                                                name="eid_end_date" placeholder="MM/DD/YYYY"
+                                                                required="1"/>
+                                                        <div class="input-group-append position-absolute d-none"
+                                                                data-target="#datetimepicker_eid_end_date"
+                                                                data-toggle="datetimepicker">
+                                                            <div class="input-group-text text-primary border-0 bg-transparent p-0">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                    <h3 >Residency Details:</h3></div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="residency_number">Residency Number</label>
+                                                        <input type="text" class="form-control"
+                                                                id="residency_number"
+                                                                name="residency_number" placeholder="Residency Number"
+                                                                required="1"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label" for="residency_state">Issue State	</label>
+                                                        <select name="residency_state" class="form-control" required="1">
+                                                            <option value = "Abu Dhabi">Abu Dhabi</option>
+                                                            <option value = "Dubai">Dubai</option>
+                                                            <option value = "Sharjah">Sharjah</option>
+                                                            <option value = "Ajman">Ajman</option>
+                                                            <option value = "Umm Al-Quwain">Umm Al-Quwain</option>
+                                                            <option value = "Fujairah">Fujairah</option>
+                                                            <option value = "Ras Al Khaimah">Ras Al Khaimah</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group admission_form_date col-md-6"
+                                                         data-target-input="nearest"
+                                                         id="datetimepicker_residency_issued_date">
+                                                        <label for="residency_issued_date">Issued Date</label>
+                                                        <input type="text"
+                                                                data-target="#datetimepicker_residency_issued_date"
+                                                                t-attf-class="form-control datetimepicker-input a fa-calendar:before"
+                                                                id="residency_issued_date"
+                                                                name="residency_issued_date" placeholder="MM/DD/YYYY"
+                                                                required="1"/>
+                                                        <div class="input-group-append position-absolute d-none"
+                                                                data-target="#datetimepicker_residency_issued_date"
+                                                                data-toggle="datetimepicker">
+                                                            <div class="input-group-text text-primary border-0 bg-transparent p-0">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group admission_form_date col-md-6"
+                                                         data-target-input="nearest"
+                                                         id="datetimepicker_residency_end_date">
+                                                        <label for="residency_end_date">End Date</label>
+                                                        <input type="text"
+                                                                data-target="#datetimepicker_residency_end_date"
+                                                                t-attf-class="form-control datetimepicker-input a "
+                                                                id="residency_end_date"
+                                                                name="residency_end_date" placeholder="MM/DD/YYYY"
+                                                                required="1"/>
+                                                        <div class="input-group-append position-absolute d-none"
+                                                                data-target="#datetimepicker_residency_end_date"
+                                                                data-toggle="datetimepicker">
+                                                            <div class="input-group-text text-primary border-0 bg-transparent p-0">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            
+                                        </div>
+                                        
+                                        <div class="tab">
+                                            <div class="row col-md-12 " style="padding-right: 15px;">
+                                                <div class="form-group col-md-12">
+                                                <h3>Secondary School:</h3></div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="school_name">School Name</label>
+                                                    <input type="text" class="form-control"
+                                                            id="school_name"
+                                                            name="school_name" placeholder="School Name"
+                                                            required="1"/>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="score">Score</label>
+                                                    <input type="text" class="form-control"
+                                                            id="score"
+                                                            name="score" placeholder="Score"
+                                                            required="1"/>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="certificate_origin">Certificate Origin</label>
+                                                    <input type="text" class="form-control"
+                                                            id="certificate_origin"
+                                                            name="certificate_origin" placeholder="Certificate Origin"
+                                                            required="1"/>
+                                                </div>
+                                                <div class="form-group admission_form_date col-md-6"
+                                                        data-target-input="nearest"
+                                                        id="datetimepicker_sec_issued_date">
+                                                    <label for="sec_issued_date">Issued Date</label>
+                                                    <input type="text"
+                                                            data-target="#datetimepicker_sec_issued_date"
+                                                            t-attf-class="form-control datetimepicker-input a fa-calendar:before"
+                                                            id="sec_issued_date"
+                                                            name="sec_issued_date" placeholder="MM/DD/YYYY"
+                                                            required="1"/>
+                                                    <div class="input-group-append position-absolute d-none"
+                                                            data-target="#datetimepicker_sec_issued_date"
+                                                            data-toggle="datetimepicker">
+                                                        <div class="input-group-text text-primary border-0 bg-transparent p-0">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="sec_state">State	</label>
+                                                    <select name="sec_state" class="form-control" required="1">
+                                                        <option value = "Abu Dhabi">Abu Dhabi</option>
+                                                        <option value = "Dubai">Dubai</option>
+                                                        <option value = "Sharjah">Sharjah</option>
+                                                        <option value = "Ajman">Ajman</option>
+                                                        <option value = "Umm Al-Quwain">Umm Al-Quwain</option>
+                                                        <option value = "Fujairah">Fujairah</option>
+                                                        <option value = "Ras Al Khaimah">Ras Al Khaimah</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="school_system">School System</label>
+                                                    <select name="school_system" class="form-control" required="1">
+                                                        <option value = "UAE">UAE</option>
+                                                        <option value = "GULF country">GULF country</option>
+                                                        <option value = "Arabian Country">Arabian Country</option>
+                                                        <option value = "Islamic Country">Islamic Country</option>
+                                                        <option value = "Other">Other</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="institute_type">Institute Type</label>
+                                                    <select name="institute_type" class="form-control" required="1">
+                                                        <option value="">Institute Type...</option>
+                                                        <t t-foreach="institute_types or []" t-as="country">
+                                                            <option t-att-value="country.id">
+                                                                <t t-esc="country.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="certificate_type">Certificate Type</label>
+                                                    <select name="certificate_type" class="form-control" required="1">
+                                                        <option value="">Certificate Type...</option>
+                                                        <t t-foreach="certificate_types or []" t-as="country">
+                                                            <option t-att-value="country.id">
+                                                                <t t-esc="country.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab">
+                                            <div class="row col-md-12 " style="padding-right: 15px;">
+                                                <!-- <div class="form-group col-md-12"> -->
+                                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="personal_photo">
+                                                            <span class="s_website_form_label_content">Personal Photo</span>
+                                                        </label>
+                                                        <div class="col-sm">
+                                                            <!-- <input id="personal_photo" type="file" class="form-control s_website_form_input" name="personal_photo"/> -->
+                                                            <input type="file" name="personal_photo" class="file" multiple="true" data-show-upload="true" data-show-caption="true" lass="file" data-show-preview="true" id="personal_photo" accept="image/*,application/pdf,video/*"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="cert_of_good_conduct">
+                                                            <span class="s_website_form_label_content" >Cert. Of Good Conduct</span>
+                                                        </label>
+                                                        <div class="col-sm">
+                                                            <!-- <input id="cert_of_good_conduct" type="file" class="form-control s_website_form_input" name="cert_of_good_conduct"/> -->
+                                                            <input type="file" name="cert_of_good_conduct" class="file" multiple="true" data-show-upload="true" data-show-caption="true" lass="file" data-show-preview="true" id="cert_of_good_conduct" accept="image/*,application/pdf,video/*"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="medical_check">
+                                                            <span class="s_website_form_label_content">Cert. Of Medical Check</span>
+                                                        </label>
+                                                        <div class="col-sm">
+                                                            <!-- <input id="medical_check" type="file" class="form-control s_website_form_input" name="medical_check"/> -->
+                                                            <input type="file" name="medical_check" class="file" multiple="true" data-show-upload="true" data-show-caption="true" lass="file" data-show-preview="true" id="medical_check" accept="image/*,application/pdf,video/*"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="passport_photo">
+                                                            <span class="s_website_form_label_content">Passport</span>
+                                                        </label>
+                                                        <div class="col-sm">
+                                                            <!-- <input id="passport_photo" type="file" class="form-control s_website_form_input" name="passport_photo"/> -->
+                                                            <input type="file" name="passport_photo" class="file" multiple="true" data-show-upload="true" data-show-caption="true" lass="file" data-show-preview="true" id="passport_photo" accept="image/*,application/pdf,video/*"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="birthday_cert">
+                                                            <span class="s_website_form_label_content">Birthday Cert.</span>
+                                                        </label>
+                                                        <div class="col-sm">
+                                                            <!-- <input id="birthday_cert" type="file" class="form-control s_website_form_input" name="birthday_cert"/> -->
+                                                            <input type="file" name="birthday_cert" class="file" multiple="true" data-show-upload="true" data-show-caption="true" lass="file" data-show-preview="true" id="birthday_cert" accept="image/*,application/pdf,video/*"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="pledge">
+                                                            <span class="s_website_form_label_content">Acknowledgemt And Pledge</span>
+                                                        </label>
+                                                        <div class="col-sm">
+                                                            <!-- <input id="pledge" type="file" class="form-control s_website_form_input" name="pledge"/> -->
+                                                            <input type="file" name="pledge" class="file" multiple="true" data-show-upload="true" data-show-caption="true" lass="file" data-show-preview="true" id="pledge" accept="image/*,application/pdf,video/*"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="overflow:auto;">
+                                            <div style="float:right;">
+                                                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                                                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                            </div>
+                                        </div>
+                                        <div style="text-align:center;margin-top:40px;">
+                                            <span class="step"></span>
+                                            <span class="step"></span>
+                                            <span class="step"></span>
+                                            <span class="step"></span>
+                                        </div>
+                                        <!-- <div class="from-group col-md-12" style="padding-right: 45px;">
+                                            <button type="submit" class="btn btn-primary mb16 mt16 col-md-12">Next
+                                            </button>
+                                        </div> -->
+                                        
+                                    </form>
+                                    
+                                        
+                                        <!-- <form id="regForm" action="">
+                                          <h1>Register:</h1>
+                                          <div class="tab">Name:
+                                            <p><input placeholder="First name..." oninput="this.className = ''" name="fname"/></p>
+                                            <p><input placeholder="Last name..." oninput="this.className = ''" name="lname"/></p>
+                                          </div>
+                                          <div class="tab">Contact Info:
+                                            <p><input placeholder="E-mail..." oninput="this.className = ''" name="email"/></p>
+                                            <p><input placeholder="Phone..." oninput="this.className = ''" name="phone"/></p>
+                                          </div>
+                                          <div class="tab">Birthday:
+                                            <p><input placeholder="dd" oninput="this.className = ''" name="dd"/></p>
+                                            <p><input placeholder="mm" oninput="this.className = ''" name="nn"/></p>
+                                            <p><input placeholder="yyyy" oninput="this.className = ''" name="yyyy"/></p>
+                                          </div>
+                                          <div class="tab">Login Info:
+                                            <p><input placeholder="Username..." oninput="this.className = ''" name="uname"/></p>
+                                            <p><input placeholder="Password..." oninput="this.className = ''" name="pword" type="password"/></p>
+                                          </div>
+                                          <div style="overflow:auto;">
+                                            <div style="float:right;">
+                                              <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                                              <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                            </div>
+                                          </div>
+                                          <div style="text-align:center;margin-top:40px;">
+                                            <span class="step"></span>
+                                            <span class="step"></span>
+                                            <span class="step"></span>
+                                            <span class="step"></span>
+                                          </div>
+                                        </form> -->
+                                </div>
+                                <div class="col-md-2"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+         
+
+    </data>
+</odoo>
