@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_inherit" model="ir.ui.view">
+        <field name="name">product.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//span[hasclass('d-inline-block')]" position="inside">
+
+                <span class="d-inline-block">
+                    <field name="assets_ok"/>
+                    <label for="assets_ok"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_to_assets_form" model="ir.ui.view">
+        <field name="name">product.assets.formF</field>
+        <field name="model">product.to.assets</field>
+        <field name="arch" type="xml">
+            <form string="Assets To Product" class="o_purchase_order">
+                <header>
+                    <button name="to_approve" states="draft" string="Approve" type="object" class="oe_highlight"/>
+                    <button name="to_confirmed" string="Confirm" type="object" states="approve" class="oe_highlight"/>
+                    <button name="to_close" type="object" states="confirmed" string="Close" class="oe_highlight"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approve,confirmed,close"
+                           readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_picking"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o" attrs="{'invisible': [('state', '==', 'draft')]}">
+                            <label for="picking_ids"/>
+                            <field name='picking_ids' invisible="1"/>
+                        </button>
+                        <button type="object" name="action_view_assets"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o" attrs="{'invisible': [('state', '==', 'draft')]}">
+                            <label for="assets_ids"/>
+                            <field name='assets_ids' invisible="1"/>
+                        </button>
+                        <button type="object" name="action_view_move"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o" attrs="{'invisible': [('state', '==', 'draft')]}">
+                            <label for="move_id"/>
+                            <field name='move_id' invisible="1"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_order"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="products">
+                            <field name="order_line"
+                                   widget="section_and_note_one2many"
+                                   mode="tree,kanban"
+                                   context="{'default_state': 'draft'}"
+                                   attrs="{'readonly': [('state', 'in', ('approve', 'confirmed','close'))]}">
+                                <tree string="Assets Order Lines" editable="bottom">
+                                    <field name="state" invisible="1"/>
+                                    <field
+                                            name="product_id"
+                                            domain="[('assets_ok', '=', True)]"/>
+                                    <field name="product_qty"/>
+                                    <!--                                    <field name="category_id"/>-->
+                                    <field name="account_id"/>
+
+                                </tree>
+
+                            </field>
+
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="note"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="assets_order_line_tree" model="ir.ui.view">
+        <field name="name">product.to.assets.tree</field>
+        <field name="model">product.to.assets</field>
+        <field name="arch" type="xml">
+            <tree string="Assets Order Lines">
+                <field name="name"/>
+                <field name="date_order"/>
+                <field name="note"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_Product_to_assets" model="ir.actions.act_window">
+        <field name="name">Assets To Product</field>
+        <field name="res_model">product.to.assets</field>
+        <field name="view_mode">tree,form</field>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new product variant
+            </p>
+            <p>
+                Product To Assets
+            </p>
+        </field>
+    </record>
+    <menuitem id="product_to_assets_menu" name="Product To Assets "
+              parent="purchase.menu_purchase_root" sequence="10" action="action_Product_to_assets"
+              groups="group_product_to_asset_user"/>
+
+</odoo>

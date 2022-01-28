@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="assets_approval" model="ir.sequence">
+            <field name="name">Proud cut To Asset  No.</field>
+            <field name="code">product.to.assets.sequence</field>
+            <field name="prefix">PTA/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">no_gap</field>
+        </record>
+    </data>
+</odoo>
