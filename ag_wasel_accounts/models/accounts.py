@@ -47,7 +47,7 @@ class Budgets(models.Model):
     def _compute_percentage(self):
         for line in self:
             if line.practical_amount != 0.00:
-                line.percentage = float((line.practical_amount or 0.0) / line.planned_amount)
+                line.percentage = abs(float((line.practical_amount or 0.0)) / line.planned_amount)
             else:
                 line.percentage = 0.00
 
@@ -88,7 +88,9 @@ class AccountAsset(models.Model):
 
     asset_code = fields.Char('Asset Code')
 
-
+    _sql_constraints = [
+        ('asset_code_uniq', 'unique (asset_code)', 'The code of the asset must be unique!')
+    ]
 # ######################################################
 # PO-Accounts Related Changes
 class PurchaseOrder(models.Model):
