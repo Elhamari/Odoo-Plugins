@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="cash_requisition_form_view" model="ir.ui.view">
+            <field name="name">cash.requisition.form.view</field>
+            <field name="model">cash.requisition</field>
+            <field name="arch" type="xml">
+                <form string="Cash Requisition">
+                <header>
+                    <button name="confirm_requisition" string="Confirm" type="object" class="btn-primary" attrs="{'invisible': [('state', 'in', ['department_approval','ir_approve','approved','reject'])]}" groups="base.group_user"/>
+<!--                    <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', 'in', ['department_approval','ir_approve'])]}" groups="base.group_user"/>-->
+                     <button name="department_approve" type="object" string="Department Approve" attrs="{'invisible': [('state', 'in', ['new','ir_approve','approved','reject'])]}" groups="hr.group_hr_manager"/>
+                     <button name="account_approve" type="object" string="Accounts Approve" attrs="{'invisible': [('state', 'in', ['new','department_approval','approved','reject'])]}" groups="account.group_account_user" />
+                     <button name="action_reject" type="object" string="Reject" attrs="{'invisible': [('state', 'in', ['new','reject'])]}" groups="hr.group_hr_manager,account.group_account_user" />
+                     <button name="action_draft" type="object" string="Mark As Draft" attrs="{'invisible': [('state', 'not in', ['reject'])]}"  />
+
+
+                     <!-- <button name="action_reject" type="object" string="Reject" attrs="{'invisible': [('state', 'in', ['new','department_approval','po_created','received','cancel', 'io_created'])]}"/>
+                       <button name="action_approve" type="object" string="Approve" attrs="{'invisible': [('state', 'in', ['new','department_approval','po_created','received','cancel','approved', 'io_created'])]}"/> -->
+<!--                    <button name="action_reset_draft" type="object" string="Reset To Draft" attrs="{'invisible': [('state', 'in', ['new','department_approval','ir_approve'])]}"/>-->
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button" type="object"
+                            name="action_view_cash_req" icon="fa-dollar" attrs="{'invisible': [('state', 'not in', ['approved'])]}" >
+                            <field name="all_exp_count" widget="statinfo" string="Expense" attrs="{'invisible': [('state', 'not in', ['approved'])]}"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title oe_left">
+                        <h1>
+                            <field name="sequence"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" options="{'no_create':True}" attrs="{'readonly': [('state', 'not in', ['new'])]}"/>
+                            <field name="amount" attrs="{'readonly': [('state', 'not in', ['new'])]}"/>
+                            <field name="employee_account_id" invisible="1" />
+
+                            <field name="payment_id" attrs="{'invisible': [('state', 'not in', ['approved'])]}"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+
+                            <!-- <field name="analytic_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}"/> -->
+                            <!-- <field name="task_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}" domain="[('project_id.analytic_account_id','=',analytic_id)]"/> -->
+                        </group>
+                        <group>
+                            <field name="requisition_date" attrs="{'readonly': [('state', 'not in', ['new'])]}"/>
+                             <field name="reason_for_requisition" required="1"/>
+                            <field name="prepared_by" invisible="1" />
+                            <field name="treasury_account_id" invisible="1" />
+                            <field name="journal_id" attrs="{'invisible': [('state', 'not in', ('approved','ir_approve'))],'required': [('state', '=', 'ir_approve')]}"/>
+
+
+                        </group>
+                    </group>
+                    <notebook>
+
+                         <page string="Other Information">
+                            <group>
+                                <group>
+                                    <field name="confirmed_by_id" readonly="1"/>
+                                    <field name="department_manager_id" readonly="1"/>
+                                    <field name="approved_by_id" readonly="1"/>
+                                    <field name="rejected_by" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="confirmed_date"/>
+                                    <field name="department_approval_date"/>
+                                    <field name="approved_date"/>
+                                    <field name="rejected_date"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="cash_requisition_tree_view" model="ir.ui.view">
+            <field name="name">cash.requisition.tree.view</field>
+            <field name="model">cash.requisition</field>
+            <field name="arch" type="xml">
+                <tree string="Cash Requisition">
+                    <field name="sequence" string="Number"/>
+                    <field name="employee_id"/>
+                    <field name="requisition_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_cash_requisition" model="ir.actions.act_window">
+            <field name="name">Cash Requisition</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cash.requisition</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="cash_requisition_new" model="ir.sequence">
+            <field name="name">Cash Requisition</field>
+            <field name="code">cash.requisition</field>
+            <field name="prefix">CR/00</field>
+            <field name="padding">3</field>
+        </record>
+
+        <!-- <record id="requisition_line_tree_view_new" model="ir.ui.view">
+            <field name="name">requisition.line.tree.view.new</field>
+            <field name="model">material.requisition.line</field>
+            <field name="arch" type="xml">
+                <tree string="Requisition Line">
+                    <field name="requisition_action"/>
+                    <field name="product_id"/>
+                    <field name="description"/>
+                    <field name="qty"/>
+                    <field name="uom_id"/>
+                    <field name="vendor_id" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record> -->
+        <menuitem id="main_menu_cash_requisition"
+            name="Petty Cash"
+            web_icon="ag_cash_requisition,static/description/cash.png"
+             />
+
+        <menuitem id="menu_cash_requisition_new"
+          name="Requisition"
+          parent="main_menu_cash_requisition"
+          sequence="9" />
+
+        <menuitem id="menu_sub_csash_requisition_new"
+          name="Cash Requisition"
+          parent="menu_cash_requisition_new"
+          action="action_cash_requisition"
+          sequence="1"  />
+
+
+
+    </data>
+</odoo>

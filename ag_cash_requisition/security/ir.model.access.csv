@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+cash_requisition_user,cash_requisition,ag_cash_requisition.model_cash_requisition,,1,1,1,1

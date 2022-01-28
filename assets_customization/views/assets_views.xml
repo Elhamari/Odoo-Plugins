@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="asset_inherit" model="ir.ui.view">
+        <field name="name">account.asset.sell</field>
+        <field name="model">account.asset.sell</field>
+        <field name="inherit_id" ref="account_asset.asset_sell_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_id']" position="after">
+                <field name="invoice_id" invisible="1"/>
+                <field name="customer_id"
+                       attrs="{'invisible': [('action', '!=', 'sell')], 'required': [('action', '=', 'sell')]}"/>
+                <field name="sale_price"
+                       attrs="{'invisible': [('action', '!=', 'sell')], 'required': [('action', '=', 'sell')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_id']" position="replace">
+                <field name="invoice_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_id']" position="replace">
+                <field name="invoice_line_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="asset_view_inherit" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+
+                <button type="object" name="action_view_invoice"
+                        class="oe_stat_button"
+                        icon="fa-pencil-square-o">
+                    <field name="invoice_id" widget="statinfo"/>
+                </button>
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+</odoo>

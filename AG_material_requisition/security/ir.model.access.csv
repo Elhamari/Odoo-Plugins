@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+material_requisition_user,material_requisition_name,AG_material_requisition.model_material_requisition,,1,1,1,1
+requisition_line_user,requisition_line_name,AG_material_requisition.model_material_requisition_line,,1,1,1,1
+add_qty_purchase_user,add_qty_purchase,AG_material_requisition.model_add_qty_purchase,,1,1,1,1

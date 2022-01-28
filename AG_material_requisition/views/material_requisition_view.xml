@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data> 
+    
+        <record id="material_requisition_form_view" model="ir.ui.view">
+            <field name="name">material.requisition.form.view</field>
+            <field name="model">material.requisition</field>
+            <field name="arch" type="xml">
+                <form string="Material Requisition">
+                <header>
+                    <button name="confirm_requisition" string="Confirm" type="object" class="btn-primary" attrs="{'invisible': [('state', 'in', ['department_approval','ir_approve','po_created','received','cancel', 'io_created'])]}" groups="base.group_user"/>
+                    <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', 'in', ['department_approval','ir_approve','po_created','received','cancel', 'io_created'])]}" groups="base.group_user"/>
+                     <button name="department_approve" type="object" string="Department Approve" attrs="{'invisible': [('state', 'in', ['new','ir_approve','po_created','received','cancel', 'io_created'])]}"/>
+                     <button name="product_available" type="object" string="Check Availability" attrs="{'invisible': [('state', 'in', ['new','department_approval','po_created','received','cancel', 'io_created'])]}"/>
+                     <!-- <button name="action_reject" type="object" string="Reject" attrs="{'invisible': [('state', 'in', ['new','department_approval','po_created','received','cancel', 'io_created'])]}"/>
+                       <button name="action_approve" type="object" string="Approve" attrs="{'invisible': [('state', 'in', ['new','department_approval','po_created','received','cancel','approved', 'io_created'])]}"/> -->
+                   <button name="create_purchase_requisition" type="object" string="Create Purchase Tender" attrs="{'invisible': [('state', 'in', ['new','department_approval','po_created','received','cancel','io_created'])]}"/><!---->
+                     <button name="create_picking" type="object" string="Create Internal Picking" attrs="{'invisible': [('state', 'in', ['new','department_approval','po_created','received','cancel','io_created'])]}"/>
+                     <button name="action_received" type="object" string="Received" attrs="{'invisible': [('state', 'in', ['new','department_approval','ir_approve','received','cancel'])]}"/>
+                    <button name="action_reset_draft" type="object" string="Reset To Draft" attrs="{'invisible': [('state', 'in', ['new','department_approval','ir_approve','po_created'])]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                         <button type="object" name="internal_picking_button" class="oe_stat_button" icon="fa-truck" attrs="{'invisible': [('internal_picking_count', '=', 0)]}">
+                            <field name="internal_picking_count" widget="statinfo" string="Delivery Order" />
+                        </button>
+                        <button type="object" name="purchase_order_button" class="oe_stat_button" icon="fa-book" attrs="{'invisible': [('purchase_order_count', '=', 0)]}">
+                            <field name="purchase_order_count" widget="statinfo" string="Purchase Order" />
+                        </button>
+                    </div>
+
+                    <div class="oe_title oe_left">
+                        <h1>
+                            <field name="sequence"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" options="{'no_create':True}" attrs="{'readonly': [('state', 'not in', ['new'])]}"/>
+                             <field name="requisition_responsible_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}"/>
+                            <!-- <field name="analytic_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}"/> -->
+                            <!-- <field name="task_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}" domain="[('project_id.analytic_account_id','=',analytic_id)]"/> -->
+                        </group>
+                        <group>
+                            <field name="requisition_date" attrs="{'readonly': [('state', 'not in', ['new'])]}"/>
+                            <field name="prepared_by" invisible="1" />
+                            <!-- <field name="received_date" attrs="{'readonly': [('state', 'in', ['cancel'])]}"/> -->
+                            <field name="requisition_deadline_date" attrs="{'readonly': [('state', 'not in', ['new'])]}"/>
+<!--                             <field name="company_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}"/> -->
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Requisitions Lines">
+                            <field name="requisition_line_ids" widget="one2many_list" attrs="{'readonly': [('state', 'not in', ['new'])]}">
+                                <tree string="Requisitions Lines" editable="bottom">
+                                    <field name="product_id" options="{'no_create':True}" domain="[('type','=','product')]" />
+                                    <field name="description" />
+                                    <field name="qty" />
+                                    <field name="available_qty" readonly="1"/>
+                                    <field name="forcasted_qty" invisible="1" readonly="1"/>
+                                    <field name="uom_id" />
+                                </tree>
+                            </field>
+                        </page>
+                         <page string="Picking Details">
+                            <group>
+                                <group>
+                                   <field name="picking_type_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}"/>
+                                </group>
+                                <group>
+                                    <field name="source_location_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}"/>
+                                    <field name="destination_location_id" attrs="{'readonly': [('state', 'in', ['cancel'])]}"/>
+                                </group>
+                            </group>
+                        </page>
+                         <page string="Other Information">
+                            <group>
+                                <group>
+                                    <field name="confirmed_by_id" readonly="1"/>
+                                    <field name="department_manager_id" readonly="1"/>
+                                    <field name="approved_by_id" readonly="1"/>
+                                    <field name="rejected_by" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="confirmed_date"/>
+                                    <field name="department_approval_date"/>
+                                    <field name="approved_date"/>
+                                    <field name="rejected_date"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <label for="reason_for_requisition"/>
+                    <field name="reason_for_requisition"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>    
+            </field>
+        </record>
+    
+        <record id="material_requisition_tree_view" model="ir.ui.view">
+            <field name="name">material.requisition.tree.view</field>
+            <field name="model">material.requisition</field>
+            <field name="arch" type="xml">
+                <tree string="Material Requisition">
+                    <field name="sequence" string="Number"/>
+                    <field name="employee_id"/>
+                    <field name="requisition_responsible_id" invisible="1"/>
+                    <field name="requisition_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    
+        <record id="action_material_requisition" model="ir.actions.act_window">
+            <field name="name">Material Requisition</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">material.requisition</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <record id="material_requisition_new" model="ir.sequence">
+            <field name="name">Material Requisition</field>
+            <field name="code">material.requisition</field>
+            <field name="prefix">MR/00</field>
+            <field name="padding">3</field>
+        </record>
+
+        <!-- <record id="requisition_line_tree_view_new" model="ir.ui.view">
+            <field name="name">requisition.line.tree.view.new</field>
+            <field name="model">material.requisition.line</field>
+            <field name="arch" type="xml">
+                <tree string="Requisition Line">
+                    <field name="requisition_action"/>
+                    <field name="product_id"/>
+                    <field name="description"/>
+                    <field name="qty"/>
+                    <field name="uom_id"/>
+                    <field name="vendor_id" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record> -->
+        <menuitem id="main_menu_requisition"
+            name="Requisition"
+            web_icon="AG_material_requisition/static/description/check.png"
+            groups="AG_material_requisition.group_mat_requisition_user" />
+
+        <menuitem id="menu_purchase_requisition_new"
+          name="Requisition"
+          parent="main_menu_requisition"
+          sequence="9"  groups="base.group_no_one,AG_material_requisition.group_mat_requisition_user"/>
+
+        <menuitem id="menu_sub_purchase_requisition_new"
+          name="Material Requisition"
+          parent="menu_purchase_requisition_new"
+          action="action_material_requisition"
+          sequence="1"  groups="base.group_no_one,AG_material_requisition.group_mat_requisition_user"/>
+
+        <record model="ir.ui.view" id="view_purchase_requisition_form_inherit">
+            <field name="name">purchase.requisition.form.inherit</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form" />
+            <field name="arch" type="xml">
+            <field name="vendor_id" position="after">
+                <field name="requisition_mat_po_id"/>
+
+                <!-- <field name="analytic_id"/> -->
+                <!-- <field name="task_id"/>  -->
+            </field>
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <button name="action_compare" string="Analyze RFQ" type="object" attrs="{'invisible': ['|','|','|',('state', '=', 'draft'),('state', '=', 'in_progress'),('state', '=', 'done'),('state', '=', 'cancel')], 'required': [('state', '=','open')]}" class="btn-primary"/>
+
+            </xpath>
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,open,done" attrs="{'invisible': [('is_quantity_copy', '=', 'none')]}"/>
+            </xpath>
+            <xpath expr="//button[1]" position="replace">
+                
+            </xpath>
+            <xpath expr="//notebook/page/field[@name='description']" position="after">
+                <separator string="Reason For Requisition"/>
+                <field name="notes" />
+            </xpath>
+            <xpath expr="//button[1]" position="replace">
+                <!-- 'default_task_id':task_id  'default_analytic_id':analytic_id  -->
+            </xpath>
+            <xpath expr="//button[@name='%(purchase_requisition.action_purchase_requisition_list)d']" position="replace">
+                <button name="%(purchase_requisition.action_purchase_requisition_list)d" type="action" class="oe_stat_button" icon="fa-list-alt"
+                        attrs="{'invisible': [('state', '=', 'draft')]}"
+                        context="{'default_requisition_mat_po_id': requisition_mat_po_id}">
+                        <field name="order_count" widget="statinfo" string="RFQs/Orders"/>
+                </button>
+
+
+            </xpath>
+            <!-- <xpath expr="//form/header/button[2]" position="replace"> 
+                <button name="%(purchase_requisition.action_purchase_requisition_to_so)d" type="action" string="New Quotation" class="btn-primary"
+                attrs="{'invisible': [('state', 'not in', ('in_progress', 'ongoing'))]}" context="{'default_analytic_id': analytic_id, 'default_task_id': task_id, 'default_requisition_mat_po_id': requisition_mat_po_id}"/>
+            </xpath> -->
+            </field>
+        </record>
+         <!-- Purchase Customization Part -->
+
+    <record id="purchase_order_line_tree_cus2" model="ir.ui.view">
+        <field name="name">purchase.order.line.tree.cus2</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase.purchase_order_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_planned']" position="replace">
+                <field name="state_id"/>
+                <button string="Add Quantity" icon="fa-shopping-cart" name="action_update_qty" aria-label="Sort" type="object"/>
+                <button string="Confirm Order" icon="fa-check" name="action_add_confirm" aria-label="Sort" type="object"/>
+                <button string="Cancel" icon="fa-times" name="action_cancel" help="Cancel" aria-label="Sort" type="object"/>
+            </xpath>
+
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-danger">state_id == 'cancel'</attribute>
+                <attribute name="decoration-success">state_id == 'confirm'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_line_search_cus2" model="ir.ui.view">
+        <field name="name">purchase.order.line.search.cus2</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Purchase Order">
+                <field name="order_id"/>
+                <field name="product_id"/>
+                <field name="partner_id" string="Vendor" filter_domain="[('partner_id', 'child_of', self)]"/>
+                <filter name="hide_cancelled" string="Hide cancelled lines" domain="[('state', '!=', 'cancel')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="groupby_supplier" string="Vendor" domain="[]" context="{'group_by' : 'partner_id'}"/>
+                    <filter name="groupby_product" string="Product" domain="[]" context="{'group_by' : 'product_id'}"/>
+                    <filter string="Order Reference" name="order_reference" domain="[]" context="{'group_by' :'order_id'}"/>
+                    <filter string="Status" name="status" domain="[]" context="{'group_by' : 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="purchase_order_line_cus_action" model="ir.actions.act_window">
+        <field name="name">Compare Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order.line</field>
+<!--        <field name="view_type">form</field>-->
+        <field name="view_mode">tree</field>
+        <field name="domain">[('requ','=', active_id)]</field>
+        <field name="context">{'search_default_hide_cancelled': 1,'search_default_groupby_product':1}</field>
+
+    </record>
+         <record id="stock_picking_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+                <field name="picking_type_id" position="after">
+                        <field name="requisition_mat_picking_id"/>
+                </field>
+                <xpath expr="//notebook/page/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
+                    <field name="available_qty" readonly="1"/>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="view_purchase_order_line_form" model="ir.ui.view">
+            <field name="name">view.purchase.order.line.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form" />
+            <field name="arch" type="xml">
+                <field name="requisition_id" position="after">
+                    <!-- <field name= "analytic_id" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}"/> -->
+                    <!-- <field name="task_id" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}" domain="[('project_id.analytic_account_id','=',analytic_id)]"/> -->
+                    <field name="requisition_mat_po_id" attrs="{'readonly': [('state', 'in', ('purchase','done', 'cancel'))]}"/>
+                </field>
+            </field>
+        </record>
+
+     <record id="purchase_order_cus_form" model="ir.ui.view">
+        <field name="name">purchase.order.cus.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price_unit']" position="after">
+                <field name="requ" invisible="1"/>
+            </xpath>
+        </field>
+     </record>
+        <!-- <record id="view_move_picking_form_inherit" model="ir.ui.view">
+            <field name="name">stock.move.form.inherit</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form" />
+            <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="available_qty"/>
+            </field>
+            </field>
+        </record>
+ -->
+               
+    </data>
+</odoo>
