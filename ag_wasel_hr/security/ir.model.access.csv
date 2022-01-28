@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_grade_degree_manager,grade.degree,model_grade_degree,base.group_user,1,1,1,1
+access_grade_level_manager,grade.level,model_grade_level,base.group_user,1,1,1,1
+access_emp_childs_manager,emp.childs,model_emp_childs,base.group_user,1,1,1,1
+access_hr_special_allowance_manager,hr.special.allowance,model_hr_special_allowance,base.group_user,1,1,1,1
+access_allowance_type_manager,allowance.type,model_allowance_type,base.group_user,1,1,1,1
+access_hr_overtimes_manager,hr.overtimes,model_hr_overtimes,base.group_user,1,1,1,1
+access_hr_overtimes_line_manager,hr.overtimes.line,model_hr_overtimes_line,base.group_user,1,1,1,1
+access_change_date_manager,change.date,model_change_date,base.group_user,1,1,1,1

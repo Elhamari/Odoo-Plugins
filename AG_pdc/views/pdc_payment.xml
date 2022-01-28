@@ -8,11 +8,16 @@
                 <field name="arch" type="xml">
 
                     <xpath expr="//button[@name='action_post']" position="after">
-                        <button name="release_button" string="Release" type="object" class="oe_highlight" attrs="{'invisible': ['|',('payment_method_code', '!=', 'pdc'),'|',('state', 'in', ('posted')),('pdc_state','not in',('release'))]}"/>
+                        <field name="second_approval_done" invisible="1"/>
+                        <button name="release_button" string="Release" type="object" class="oe_highlight" attrs="{'invisible': ['|',('payment_method_code', '!=', 'pdc'),'|',('state', 'not in', ('posted')),('pdc_state','in',('release'))]}"/>
+                        <button name="second_confirm" string="Second Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('payment_method_code', '!=', 'custody'),'|',('state', 'not in', ('posted')),('second_approval_done','=',True)]}"/>
                     </xpath>
                     <xpath expr="//button[@name='button_open_journal_entry']" position="after">
                         <button name="button_open_release_journal_entry" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('pdc_state','not in',('release'))]}">
                             Released JV
+                        </button>
+                        <button name="button_open_custody_journal_entry" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('second_approval_done','=',False)]}">
+                            Custody JV
                         </button>
                     </xpath>
 
@@ -23,6 +28,8 @@
                     </xpath>
                     <xpath expr="//field[@name='payment_method_line_id']" position="after">
                         <field name="pdc_account" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')],'required': [('payment_method_code', '=', 'pdc')],'readonly': [('state', 'not in', ('draft'))]}"/>
+                        <field name="custody_account" attrs="{'invisible': [('payment_method_code', '!=', 'custody')],'required': [('payment_method_code', '=', 'custody')],'readonly': [('state', 'not in', ('draft'))]}"/>
+                        
                     </xpath> 
                     <xpath expr="//field[@name='partner_bank_id']" position="after">
                         <field name="release_move" required="0" invisible="1" attrs="{'invisible': ['|',('id', '=', False),('pdc_state','not in',('release'))]}" groups="account.group_account_readonly"/> 
@@ -47,12 +54,54 @@
                     <xpath expr="//field[@name='date']" position="after">
                         <field name="effective_date" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')],'required': [('payment_method_code', '=', 'pdc')]}"/>
                         <field name="bank_reference" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')]}"/>
-                        <field name="cheque_reference" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')]}"/>
+                        <field name="cheque_reference" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')],'required': [('payment_method_code', '=', 'pdc')]}"/>
                    </xpath>
 
 
                 </field>
         </record>
+
+        <record id="account_payment_tree_inherited_pdc_man" model="ir.ui.view">
+            <field name="name">account.payment.tree.inherited.pdc</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <tree string="PDC Payments" create="false">
+                    <field name="name" />
+                    <field name="partner_id" />
+                    <field name="effective_date" />
+                    <field name="cheque_reference" />
+                    <field name="amount" />
+                    <field name="pdc_state" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_account_payments_payable_pdc" model="ir.actions.act_window">
+            <field name="name">Cheque Management</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,form,graph</field>
+            <!-- <field name="context">{
+                'default_payment_type': 'outbound',
+                'default_partner_type': 'supplier',
+                'search_default_outbound_filter': 1,
+                'default_move_journal_types': ('bank', 'cash'),
+            }</field> -->
+            <!-- <field name="create">False</field> -->
+            <field name="domain">[('payment_method_code','=','pdc')]</field>
+            <field name="view_id" ref="account_payment_tree_inherited_pdc_man"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                  Register a payment
+                </p><p>
+                  Payments are used to register liquidity movements. You can process those payments by your own means or by using installed facilities.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Cheque Management"
+        id="menu_action_account_payments_payable_pdc"
+        action="action_account_payments_payable_pdc"
+        parent="account_accountant.menu_accounting"
+        sequence="4"/>
 
         <record id="account_payment_tree_inherited_pdc" model="ir.ui.view">
                 <field name="name">account.payment.tree.inherited.pdc</field>
@@ -73,6 +122,7 @@
                 <field name="arch" type="xml">
                     <xpath expr="//field[@name='loss_account_id']" position="after">
                         <field name="pdc_account" attrs="{'required': [('id', '!=', False), ('type', 'in', ('bank', 'cash'))], 'invisible': [('type', 'not in', ('bank', 'cash'))]}"/>
+                        <field name="custody_account" attrs="{'required': [('id', '!=', False), ('type', 'in', ('cash'))], 'invisible': [('type', 'not in', ('cash'))]}"/>
                     </xpath> 
                 </field>
         </record>
