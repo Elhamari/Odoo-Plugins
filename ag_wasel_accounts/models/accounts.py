@@ -17,9 +17,29 @@ class AnalyticAccount(models.Model):
 class AnalyticAccountTag(models.Model):
     _inherit = 'account.analytic.tag'
 
+    @api.model_create_multi
+    def create(self, vals):
+        percent = 0.0
+        res = super(AnalyticAccountTag, self).create(vals)
+        if res.analytic_distribution_ids:
+            for line in res.analytic_distribution_ids:
+                percent += line.percentage
+            if percent != 100:
+                raise UserError('The total of the percentage values should be 100%')
+        return res
 
-    total_percent = fields.Float('Total Percentage',compute='_onchange_analytic_tag',store=True,)
 
+    def write(self, vals):
+        percent = 0.0
+        res = super(AnalyticAccountTag, self).write(vals)
+        if self.analytic_distribution_ids:
+            for line in self.analytic_distribution_ids:
+                percent += line.percentage
+            if percent != 100:
+                raise UserError('The total of the percentage values should be 100%')
+        return res
+        
+        
     @api.depends('analytic_distribution_ids')
     def _onchange_analytic_tag(self):
         for rec in self:
@@ -32,10 +52,6 @@ class AnalyticAccountTag(models.Model):
             else:
                 rec.total_percent = 0.0
 
-class AnalyticAccountTag(models.Model):
-    _inherit = 'account.analytic.distribution'
-
-    percentage = fields.Float(string='Percentage', required=True, default=0.0)
 
 
 # ######################################################
