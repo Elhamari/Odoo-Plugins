@@ -9,21 +9,30 @@
 
                     <xpath expr="//button[@name='action_post']" position="after">
                         <field name="second_approval_done" invisible="1"/>
-                        <button name="release_button" string="Release" type="object" class="oe_highlight" attrs="{'invisible': ['|',('payment_method_code', '!=', 'pdc'),'|',('state', 'not in', ('posted')),('pdc_state','in',('release'))]}"/>
+
                         <button name="second_confirm" string="Second Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('payment_method_code', '!=', 'custody'),'|',('state', 'not in', ('posted')),('second_approval_done','=',True)]}"/>
+                        
+        
+                        <button name="deposit_button" string="DEPOSIT" type="object" class="oe_highlight" attrs="{'invisible': ['|','|','|',('payment_method_code', '!=', 'pdc'),('state', 'not in', ('posted')),('payment_type','!=','inbound'),('cheque_state','not in',('bounce'))]}"/>
+                        
+                        <button name="release_button" string="DEPOSIT" type="object" class="oe_highlight" attrs="{'invisible': ['|','|','|',('payment_method_code', '!=', 'pdc'),('state', 'not in', ('posted')),('payment_type','!=','inbound'),('cheque_state','not in',('draft'))]}"/>
+                        <button name="return_cheque" string="RETURN" type="object" class="oe_highlight" attrs="{'invisible': ['|','|','|',('payment_method_code', '!=', 'pdc'),('state', 'not in', ('posted')),('payment_type','!=','inbound'),('cheque_state','!=','bounce')]}"/>
+                        <button name="bounce_check" string="BOUNCED" type="object" class="oe_highlight" attrs="{'invisible': ['|','|','|',('payment_method_code', '!=', 'pdc'),('state', 'not in', ('posted')),('payment_type','!=','inbound'),('cheque_state','not in',('deposit'))]}"/>
                     </xpath>
                     <xpath expr="//button[@name='button_open_journal_entry']" position="after">
-                        <button name="button_open_release_journal_entry" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('pdc_state','not in',('release'))]}">
-                            Released JV
-                        </button>
                         <button name="button_open_custody_journal_entry" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('second_approval_done','=',False)]}">
                             Custody JV
+                        </button>
+
+                        <button class="oe_stat_button" type="object"
+                            name="cheque_entry_view" icon="fa-bars" attrs="{'invisible': [('cheque_state','in',('draft'))]}" >
+                            Cheque JVs
                         </button>
                     </xpath>
 
                     
                     <xpath expr="//field[@name='state']" position="before">
-                        <field name="pdc_state" widget="statusbar" statusbar_visible="draft,release" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')]}"/>
+                        <field name="cheque_state" widget="statusbar" statusbar_visible="deposit,return,bounce" attrs="{'invisible': ['|',('payment_method_code', '!=', 'pdc'),('payment_type','!=','inbound')]}"/>
                         <field name="payment_method_code" invisible="1"/>
                     </xpath>
                     <xpath expr="//field[@name='payment_method_line_id']" position="after">
@@ -32,7 +41,7 @@
                         
                     </xpath> 
                     <xpath expr="//field[@name='partner_bank_id']" position="after">
-                        <field name="release_move" required="0" invisible="1" attrs="{'invisible': ['|',('id', '=', False),('pdc_state','not in',('release'))]}" groups="account.group_account_readonly"/> 
+                        <field name="release_move" required="0" invisible="1" attrs="{'invisible': ['|',('id', '=', False),('cheque_state','not in',('deposit'))]}" groups="account.group_account_readonly"/> 
                    </xpath> 
                     <xpath expr="//group[@name='group2']" position="after">
                         <group name="group4" attrs="{'invisible': [('payment_difference', '=', 0.0)]}">
@@ -55,39 +64,49 @@
                         <field name="effective_date" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')],'required': [('payment_method_code', '=', 'pdc')]}"/>
                         <field name="bank_reference" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')]}"/>
                         <field name="cheque_reference" attrs="{'invisible': [('payment_method_code', '!=', 'pdc')],'required': [('payment_method_code', '=', 'pdc')]}"/>
+                        <field name="employee_id" readonly="1"/>
                    </xpath>
 
 
                 </field>
         </record>
 
-        <record id="account_payment_tree_inherited_pdc_man" model="ir.ui.view">
-            <field name="name">account.payment.tree.inherited.pdc</field>
+        <record id="account_payment_tree_inherited_pdc_cheque" model="ir.ui.view">
+            <field name="name">account.payment.tree.inherited.pdc.cheque</field>
             <field name="model">account.payment</field>
             <field name="arch" type="xml">
-                <tree string="PDC Payments" create="false">
+                <tree string="Cheque Management" create="false">
                     <field name="name" />
                     <field name="partner_id" />
                     <field name="effective_date" />
                     <field name="cheque_reference" />
                     <field name="amount" />
-                    <field name="pdc_state" widget="badge"/>
+                    <field name="payment_type" />
+                    <field name="cheque_state" widget="badge"/>
                 </tree>
             </field>
         </record>
-        <record id="action_account_payments_payable_pdc" model="ir.actions.act_window">
-            <field name="name">Cheque Management</field>
+        <record id="action_account_out_pdc_cheque" model="ir.actions.act_window">
+            <field name="name">Outgoing Cheques</field>
             <field name="res_model">account.payment</field>
             <field name="view_mode">tree,form,graph</field>
-            <!-- <field name="context">{
-                'default_payment_type': 'outbound',
-                'default_partner_type': 'supplier',
-                'search_default_outbound_filter': 1,
-                'default_move_journal_types': ('bank', 'cash'),
-            }</field> -->
-            <!-- <field name="create">False</field> -->
-            <field name="domain">[('payment_method_code','=','pdc')]</field>
-            <field name="view_id" ref="account_payment_tree_inherited_pdc_man"/>
+            <field name="domain">[('payment_method_code','=','pdc'),('payment_type','=','outbound')]</field>
+            <field name="view_id" ref="account_payment_tree_inherited_pdc_cheque"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                  Register a payment
+                </p><p>
+                  Payments are used to register liquidity movements. You can process those payments by your own means or by using installed facilities.
+                </p>
+            </field>
+        </record>
+        
+        <record id="action_account_in_pdc_cheque" model="ir.actions.act_window">
+            <field name="name">Incoming Cheques</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="domain">[('payment_method_code','=','pdc'),('payment_type','=','inbound')]</field>
+            <field name="view_id" ref="account_payment_tree_inherited_pdc_cheque"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                   Register a payment
@@ -99,9 +118,20 @@
 
         <menuitem name="Cheque Management"
         id="menu_action_account_payments_payable_pdc"
-        action="action_account_payments_payable_pdc"
         parent="account_accountant.menu_accounting"
         sequence="4"/>
+        
+        <menuitem name="Incoming Cheque"
+        id="menu_action_account_in_pdc_cheque"
+        action="action_account_in_pdc_cheque"
+        parent="menu_action_account_payments_payable_pdc"
+        sequence="4"/>
+        <menuitem name="Outgoing Cheque"
+        id="menu_action_account_out_pdc_cheque"
+        action="action_account_out_pdc_cheque"
+        parent="menu_action_account_payments_payable_pdc"
+        sequence="4"/>
+
 
         <record id="account_payment_tree_inherited_pdc" model="ir.ui.view">
                 <field name="name">account.payment.tree.inherited.pdc</field>
@@ -109,7 +139,7 @@
                 <field name="inherit_id" ref="account.view_account_payment_tree"/>
                 <field name="arch" type="xml">
                     <xpath expr="//field[@name='state']" position="before">
-                        <field name="pdc_state"  />
+                        <field name="cheque_state"  />
                         <field name="effective_date"/>
                    </xpath>
                 </field>
@@ -123,9 +153,48 @@
                     <xpath expr="//field[@name='loss_account_id']" position="after">
                         <field name="pdc_account" attrs="{'required': [('id', '!=', False), ('type', 'in', ('bank', 'cash'))], 'invisible': [('type', 'not in', ('bank', 'cash'))]}"/>
                         <field name="custody_account" attrs="{'required': [('id', '!=', False), ('type', 'in', ('cash'))], 'invisible': [('type', 'not in', ('cash'))]}"/>
+                        <field name="bounce_account" attrs="{'required': [('id', '!=', False), ('type', 'in', ('bank', 'cash'))], 'invisible': [('type', 'not in', ('bank', 'cash'))]}"/>
                     </xpath> 
                 </field>
         </record>
+        
+        
+        
+        <record id="account_payment_tree_inherited_cash" model="ir.ui.view">
+            <field name="name">account.payment.tree.inherited.cash</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Cash Management" create="false">
+                    <field name="name" />
+                    <field name="partner_id" />
+                    <field name="amount" />
+                    <field name="payment_type" />
+                    <field name="employee_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_account_cash" model="ir.actions.act_window">
+            <field name="name">Cash Management</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="domain">[('payment_method_code','=','custody')]</field>
+            <field name="view_id" ref="account_payment_tree_inherited_cash"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                  Register a payment
+                </p><p>
+                  Payments are used to register liquidity movements. You can process those payments by your own means or by using installed facilities.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Cash Management"
+        id="menu_action_account_payments_cash"
+        parent="account_accountant.menu_accounting"
+        action = "action_account_cash"
+        sequence="5"/>
+        
         
     </data>
 </odoo>
