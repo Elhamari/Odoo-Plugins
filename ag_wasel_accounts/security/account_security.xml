@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="purchase_budget_approval">
+            <field name="name">Purchase Budget</field>
+            <field name="sequence">2</field>
+            <field name="visible" eval="0" />
+        </record>
+
+        <record id="group_purchase_budget_user" model="res.groups">
+            <field name="name">Purchase Budget Approval</field>
+            <field name="category_id" ref="purchase_budget_approval"/>
+        </record>
+    </data>
+</odoo>

@@ -320,7 +320,7 @@ class MaterialRequisition(models.Model):
 		purchase_req_line_obj = self.env['purchase.requisition.line']
 		for res in self:
 			req_vals = purchase_req_obj.create({
-											# 'analytic_id': res.analytic_id.id,
+											#'analytic_id': res.analytic_id.id,
 											# 'task_id': res.task_id.id,
 											'requisition_mat_po_id':res.id,
 											'origin':res.sequence,
@@ -333,16 +333,14 @@ class MaterialRequisition(models.Model):
 			req_line_vals = purchase_req_line_obj.create({
 				'product_id':line.product_id.id,
 				'display_name':line.description, 
-				# 'account_analytic_id':res.analytic_id.id,
+				'account_analytic_id':res.analytic_id.id,
 				'product_qty':line.qty,
 				'product_uom_id':line.uom_id.id,
 				'requisition_id':req_vals.id,
 
 				})
 		self.sudo().create_picking_new()
-		res = self.write({
-							'state':'po_created',
-						})
+		res = self.write({'state':'po_created',})
 		return res 
 
 	def _default_destination_location(self):
@@ -354,8 +352,9 @@ class MaterialRequisition(models.Model):
 		return location_id
 
 	sequence = fields.Char(string='Sequence', readonly=True,copy =False)
-	employee_id = fields.Many2one('res.users',string="Employee",required=True, track_visibility='always',default=lambda self: self.env.user)
-	requisition_responsible_id  = fields.Many2one('res.users',string="Requisition Responsible")
+	employee_id = fields.Many2one('hr.employee', string="Employee", required=True, track_visibility='always',
+                                  default=lambda self: self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1))
+	analytic_id  = fields.Many2one('account.analytic.account',string="Analytic Account")
 	requisition_date = fields.Date(string="Requisition Date",required=True,track_visibility='always')
 	received_date = fields.Date(string="Received Date",readonly=True)
 	requisition_deadline_date = fields.Date(string="Requisition Deadline")

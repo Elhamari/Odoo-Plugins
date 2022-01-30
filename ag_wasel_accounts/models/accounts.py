@@ -54,6 +54,19 @@ class AnalyticAccountTag(models.Model):
 
 
 
+#######################################################
+class ResConfigSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+
+    po_budget_approval = fields.Boolean(related='company_id.po_budget_approval', string="Purchase Order Budget Approval", readonly=False)
+
+class Company(models.Model):
+    """ Default  accounts and journals part"""
+    _inherit = "res.company"
+
+    po_budget_approval = fields.Boolean(string='Purchase Order Budget Approval',
+        help="Minimum amount for which a double validation is required")
+        
 # ######################################################
 # Budgets Changes
 class Budgets(models.Model):
@@ -112,6 +125,35 @@ class AccountAsset(models.Model):
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
+
+    def button_confirm(self):
+        order_list=[]
+        for order in self:
+            if self.env.company.po_budget_approval is True:
+                for line in self.order_line:
+                    order_list.append({'account_id':line.product_id.property_account_expense_id.id or line.product_id.categ_id.property_account_expense_categ_id.id, 'analytic_id':line.account_analytic_id.id, 'price_subtotal':line.price_subtotal})
+                budget = self.env['crossovered.budget'].search([('state', '=', 'validate')])
+                for budget_obj in budget:
+                    for budget_line in budget_obj.crossovered_budget_line:
+                        for a in order_list:
+                            if budget_line.general_budget_id.account_ids.id == a['account_id'] and budget_line.analytic_account_id.id == a['analytic_id']:
+                                if (budget_line.planned_amount - budget_line.practical_amount)  < a['price_subtotal']  and not self.env.user.has_group('ag_wasel_accounts.group_purchase_budget_user'):
+                                    raise UserError(_('This document need to confirmed by the manager becuase it exceeded the budget amount'))
+                                        
+                                    
+            if order.state not in ['draft', 'sent']:
+                continue
+            order._add_supplier_to_product()
+            # Deal with double validation process
+            if order._approval_allowed():
+                order.button_approve()
+            else:
+                order.write({'state': 'to approve'})
+            if order.partner_id not in order.message_partner_ids:
+                order.message_subscribe([order.partner_id.id])
+        return True
+        
+        
     def _prepare_invoice(self):
         """Prepare the dict of values to create the new invoice for a purchase order.
         """

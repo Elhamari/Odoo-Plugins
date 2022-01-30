@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="account_payment_form_inherited_cash" model="ir.ui.view">
+                <field name="name">account.payment.form.inherited.cash</field>
+                <field name="model">account.payment</field>
+                <field name="inherit_id" ref="account.view_account_payment_form"/>
+                <field name="arch" type="xml">
+
+
+                    <xpath expr="//field[@name='state']" position="before">
+                        <field name="custody_state" widget="statusbar" statusbar_visible="draft,deposit" attrs="{'invisible': ['|',('payment_method_code', '!=', 'custody'),('payment_type','!=','inbound')]}"/>
+                    </xpath>
+                    
+                    <xpath expr="//button[@name='action_post']" position="after">
+                        <field name="second_approval_done" invisible="1"/>
+                        <button name="second_confirm" string="To Main Treasury" type="object" class="oe_highlight" attrs="{'invisible': ['|',('payment_method_code', '!=', 'custody'),'|',('state', 'not in', ('posted')),('second_approval_done','=',True)]}"/>
+
+                    </xpath>
+                    <xpath expr="//button[@name='button_open_journal_entry']" position="after">
+                        <button name="button_open_custody_journal_entry" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('second_approval_done','=',False)]}">
+                            Custody JV
+                        </button>
+                    </xpath>
+                    
+                   <xpath expr="//field[@name='date']" position="after">
+                        <field name="custody_date" invisble="1"/>
+
+                        <field name="employee_id" readonly="1"/>
+                   </xpath>
+     
+                    <xpath expr="//field[@name='payment_method_line_id']" position="after">
+                        <field name="custody_account" attrs="{'invisible': [('payment_method_code', '!=', 'custody')],'required': [('payment_method_code', '=', 'custody')],'readonly': [('state', 'not in', ('draft'))]}"/>
+                    </xpath>
+            </field>
+        </record>
+
+ 
+         <record id="account_journal_form_inherited_cash" model="ir.ui.view">
+                <field name="name">account.journal.form.inherited.cash</field>
+                <field name="model">account.journal</field>
+                <field name="inherit_id" ref="account.view_account_journal_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='loss_account_id']" position="after">
+                        <field name="custody_account" attrs="{'required': [('id', '!=', False), ('type', 'in', ('cash'))], 'invisible': [('type', 'not in', ('cash'))]}"/>
+                    </xpath> 
+                </field>
+        </record>
+
+
+        <record id="account_payment_tree_inherited_cash" model="ir.ui.view">
+            <field name="name">account.payment.tree.inherited.cash</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Cash Management" create="false">
+                    <field name="custody_date"/>
+                    <field name="employee_id"/>
+                    <field name="name" />
+                    <field name="partner_id" />
+                    <field name="amount" sum="amount"/>
+                    <field name="payment_type" />
+                    <field name="custody_state" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_account_cash" model="ir.actions.act_window">
+            <field name="name">Cash Management</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="domain">[('payment_method_code','=','custody')]</field>
+            <field name="view_id" ref="account_payment_tree_inherited_cash"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                  Register a payment
+                </p><p>
+                  Payments are used to register liquidity movements. You can process those payments by your own means or by using installed facilities.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Cash Management"
+        id="menu_action_account_payments_cash"
+        parent="account_accountant.menu_accounting"
+        action = "action_account_cash"
+        sequence="5"/>
+
+        <!-- Action confirm_payments for multi -->
+        <record id="action_account_payments_treasury" model="ir.actions.server">
+            <field name="name">To Main Treasury</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
+            <field name="model_id" ref="account.model_account_payment"/>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_view_types">list</field>
+            <field name="code">
+                records.second_confirm()
+            </field>
+        </record>
+        
+        
+    </data>
+</odoo>

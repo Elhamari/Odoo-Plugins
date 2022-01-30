@@ -45,10 +45,10 @@
 
 
         # 'security/ir.model.access.csv',
-        # 'security/hr_security.xml',
+        'security/account_security.xml',
         # 'views/report.xml',
         'views/accounts.xml',
-
+        'views/res_config_settings_views.xml',
         # 'views/self_service.xml',
         # 'data/sequence.xml',
 
